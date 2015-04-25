@@ -1,18 +1,17 @@
 from g.one.resources import Resources
 from pyglet.window import key
 import pyglet
+from g.one.sprite import GameSprite
 
-class Ship(pyglet.sprite.Sprite):
-    vel_y = 0
-
-    # [up, down, left, right]
-    keystate = [False] * 4
-
-    def __init__(self, parent):
-        pyglet.sprite.Sprite.__init__(self, img=Resources.ship_image,
-                                      batch=Resources.batch)
-        pyglet.clock.schedule_interval(self.update, 1/60)
-        parent.push_handlers(player1=self.on_key)
+class Ship(GameSprite):
+    def __init__(self,window,player):
+        GameSprite.__init__(self, window, Resources.ship_image)
+        self.player = player
+        self.keystate = [False] * 4
+        if player == 1:
+            window.push_handlers(player1=self.on_key)
+        elif player == 2:
+            window.push_handlers(player2=self.on_key)
 
     def update(self,dt):
         self.x += (self.keystate[3] - self.keystate[2]) * 200 * dt
