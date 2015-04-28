@@ -3,10 +3,10 @@ import pyglet
 from g.one.resources import Resources
 
 class GameSprite(pyglet.sprite.Sprite):
-    def __init__(self, window, img):
-        pyglet.sprite.Sprite.__init__(self, img=img, batch=Resources.batch)
+    def __init__(self, stage, img):
+        pyglet.sprite.Sprite.__init__(self, img=img, batch=stage.batch)
         pyglet.clock.schedule_interval(self.__update, 1/60)
-        self.window = window
+        self.stage = stage
 
     def __get_left(self):
         return self.x
@@ -25,7 +25,7 @@ class GameSprite(pyglet.sprite.Sprite):
     bottom = property(__get_bottom)
 
     def __update(self, dt):
-        if self.window.paused:
+        if self.stage.paused:
             return
         self.update(dt)
 

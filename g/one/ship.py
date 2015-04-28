@@ -5,14 +5,14 @@ from g.one.resources import Resources
 from g.one.sprite import GameSprite
 
 class Ship(GameSprite):
-    def __init__(self,window,player):
-        GameSprite.__init__(self, window, Resources.ship_image)
+    def __init__(self, stage, player):
+        GameSprite.__init__(self, stage, Resources.ship_image)
         self.player = player
         self.keystate = [False] * 4
         if player == 1:
-            window.push_handlers(player1=self.on_key)
+            stage.push_handlers(player1=self.on_key)
         elif player == 2:
-            window.push_handlers(player2=self.on_key)
+            stage.push_handlers(player2=self.on_key)
 
     def update(self,dt):
         self.x += (self.keystate[3] - self.keystate[2]) * 200 * dt

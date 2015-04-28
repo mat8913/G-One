@@ -7,6 +7,7 @@ from g.one.resources import Resources
 class Game(pyglet.event.EventDispatcher):
     def __init__(self, window, players=1):
         window.push_handlers(self)
+        self.batch = pyglet.graphics.Batch()
         self.register_event_type('player1')
         self.register_event_type('player2')
         self.players = players
@@ -18,7 +19,7 @@ class Game(pyglet.event.EventDispatcher):
             self.ship2_sprite = Ship(self,2)
 
     def draw(self):
-        Resources.batch.draw()
+        self.batch.draw()
 
     def on_key_press(self, symbol, modifiers):
         if symbol in [key.LEFT,key.RIGHT,key.UP,key.DOWN]:
