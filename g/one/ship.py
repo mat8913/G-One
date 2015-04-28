@@ -1,6 +1,7 @@
-from g.one.resources import Resources
-from pyglet.window import key
 import pyglet
+from pyglet.window import key
+
+from g.one.resources import Resources
 from g.one.sprite import GameSprite
 
 class Ship(GameSprite):

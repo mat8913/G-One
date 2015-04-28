@@ -1,4 +1,5 @@
 import pyglet
+
 from g.one.resources import Resources
 
 class GameSprite(pyglet.sprite.Sprite):

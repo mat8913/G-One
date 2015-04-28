@@ -1,6 +1,7 @@
 import pyglet
 from pyglet.window import key
-from g.one.state import State
+
+from g.one.game import Game
 
 class MainMenu():
     selected = 0
@@ -13,7 +14,7 @@ class MainMenu():
 
     def __init__(self, window):
         self.window = window
-        window.push_handlers(menu_key=self.on_key)
+        window.push_handlers(self)
         option = pyglet.text.Label('One Player',
                                   font_name='Times New Roman',
                                   font_size=16,
@@ -34,18 +35,16 @@ class MainMenu():
                                   anchor_x='center', anchor_y='center')
         self.options += [option]
 
-    def on_key(self, symbol):
+    def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
             self.selected = max(self.selected -1, 0)
         elif symbol == key.DOWN:
             self.selected = min(self.selected +1, 2)
         elif symbol == key.ENTER:
             if self.selected == 0:
-                self.window.players = 1
-                self.window.change_state(State.GAME)
+                self.window.change_stage(Game(self.window,1))
             elif self.selected == 1:
-                self.window.players = 2
-                self.window.change_state(State.GAME)
+                self.window.change_stage(Game(self.window,2))
             elif self.selected == 2:
                 quit()
         for (i, option) in enumerate(self.options):
