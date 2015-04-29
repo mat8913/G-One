@@ -13,14 +13,14 @@ class MainMenu():
                                   font_name='Times New Roman',
                                   font_size=36,
                                   x=427, y=400,
-                                  color=(0,255,0,255),
+                                  color=(255, 255, 0, 255),
                                   anchor_x='center', anchor_y='center',
                                   batch=self.batch)
         option = pyglet.text.Label('One Player',
                                   font_name='Times New Roman',
                                   font_size=16,
                                   x=427, y=160,
-                                  color=(255,255,0,255),
+                                  color=(255, 255, 0, 255),
                                   anchor_x='center', anchor_y='center',
                                   batch=self.batch)
         self.options = [option]
@@ -41,21 +41,21 @@ class MainMenu():
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
-            self.selected = max(self.selected -1, 0)
+            self.selected = max(self.selected-1, 0)
         elif symbol == key.DOWN:
-            self.selected = min(self.selected +1, 2)
+            self.selected = min(self.selected+1, 2)
         elif symbol == key.ENTER:
             if self.selected == 0:
-                self.window.change_stage(Game(self.window,1))
+                self.window.change_stage(Game(self.window, 1))
             elif self.selected == 1:
-                self.window.change_stage(Game(self.window,2))
+                self.window.change_stage(Game(self.window, 2))
             elif self.selected == 2:
                 quit()
         for (i, option) in enumerate(self.options):
             if self.selected == i:
-                option.color = color=(255,255,0,255)
+                option.color = color=(255, 255, 0, 255)
             else:
-                option.color = color=(255,255,255,255)
+                option.color = color=(255, 255, 255, 255)
 
     def draw(self):
         self.batch.draw()

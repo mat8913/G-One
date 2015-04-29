@@ -1,4 +1,5 @@
 import pyglet
+
 from g.one.resources import Resources
 from g.one.game_window import GameWindow
 
