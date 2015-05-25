@@ -22,7 +22,7 @@ class GameWindow(pyglet.window.Window):
             self.set_fullscreen(not self.fullscreen)
 
     def change_stage(self, newstage):
-        del self.current_stage
+        self.current_stage.delete()
         self.current_stage = newstage
 
     def on_resize(self, width, height):
