@@ -30,6 +30,29 @@ class MenuAction(MenuItem):
         if symbol == key.ENTER:
             self.action()
 
+class KeySelector(MenuItem):
+    def __init__(self, menu, key, x=0, y=0):
+        MenuItem.__init__(self, menu, "", x, y)
+        self.selected_key = key
+
+    def on_key_release(self, symbol, modifiers):
+        if symbol == key.ENTER:
+            self.menu.window.push_handlers(on_key_release=self.select_key)
+
+    def select_key(self, symbol, modifiers):
+        self.selected_key = symbol
+        self.menu.window.remove_handlers(on_key_release=self.select_key)
+        return True
+
+    @property
+    def selected_key(self):
+        return self._selected_key
+
+    @selected_key.setter
+    def selected_key(self, value):
+        self._selected_key = value
+        self.label.text = key.symbol_string(value)
+
 
 class HorizontalSelection():
     def __init__(self, options):
