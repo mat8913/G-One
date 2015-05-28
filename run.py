@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 try:
- import g.one.main
+    import g.one.main
 except ImportError:
- import os, sys
- sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
- import g.one.main
+    from os.path import dirname, abspath
+    from sys import path
+    path.append(dirname(dirname(abspath(__file__))))
+    import g.one.main
 
 g.one.main.main()

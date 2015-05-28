@@ -4,6 +4,7 @@ from pyglet.window import key
 from g.one.resources import Resources
 from g.one.menu import MainMenu
 
+
 class GameWindow(pyglet.window.Window):
     def __init__(self):
         pyglet.window.Window.__init__(self, width=854, height=480,

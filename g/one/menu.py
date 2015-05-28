@@ -42,19 +42,27 @@ class Menu():
 class MainMenu(Menu):
     def __init__(self, window):
         Menu.__init__(self, window)
-        self.title = pyglet.text.Label('G - One',
-                                  font_name='Times New Roman',
-                                  font_size=36,
-                                  x=427, y=400,
-                                  color=(255, 255, 0, 255),
-                                  anchor_x='center', anchor_y='center',
-                                  batch=self.batch)
-        self.options.append(MenuAction(self, "New Game", lambda: window.change_stage(NewGameMenu(window)), 427, 160))
-        self.options.append(MenuItem(self, "Load Game", 427, 130))
-        self.options.append(MenuItem(self, "Highscore List", 427, 100))
-        self.options.append(MenuItem(self, "Options", 427, 70))
-        self.options.append(MenuAction(self, "Exit", quit, 427, 40))
+        self.title = pyglet.text.Label(
+          'G - One',
+          font_name='Times New Roman',
+          font_size=36,
+          x=427, y=400,
+          color=(255, 255, 0, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.options = [
+          MenuAction(self, "New Game", self.new_game_pressed, 427, 160),
+          MenuItem(self, "Load Game", 427, 130),
+          MenuItem(self, "Highscore List", 427, 100),
+          MenuItem(self, "Options", 427, 70),
+          MenuAction(self, "Exit", quit, 427, 40)
+        ]
         self.selected = 0
+
+    def new_game_pressed(self):
+        self.window.change_stage(NewGameMenu(self.window))
+
 
 
 class NewGameMenu(Menu):

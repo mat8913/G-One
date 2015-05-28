@@ -2,6 +2,7 @@ import pyglet
 
 from g.one.resources import Resources
 
+
 class GameSprite(pyglet.sprite.Sprite):
     def __init__(self, stage, img):
         pyglet.sprite.Sprite.__init__(self, img=img, batch=stage.batch)
@@ -29,14 +30,14 @@ class GameSprite(pyglet.sprite.Sprite):
             return
         self.update(dt)
 
-    def update(self,dt):
+    def update(self, dt):
         pass
 
     def intersect(self, sprite):
-        return not ((self.left > sprite.right)
-            or (self.right < sprite.left)
-            or (self.top < sprite.bottom)
-            or (self.bottom > sprite.top))
+        return not ((self.left > sprite.right) or
+                    (self.right < sprite.left) or
+                    (self.top < sprite.bottom) or
+                    (self.bottom > sprite.top))
 
     def collide_once(self, sprite_list):
         for sprite in sprite_list:

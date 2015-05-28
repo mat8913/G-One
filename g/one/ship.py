@@ -4,6 +4,7 @@ from pyglet.window import key
 from g.one.resources import Resources
 from g.one.sprite import GameSprite
 
+
 class Ship(GameSprite):
     def __init__(self, stage, player):
         GameSprite.__init__(self, stage, Resources.ship_image)
@@ -14,7 +15,7 @@ class Ship(GameSprite):
         elif player == 2:
             stage.push_handlers(player2=self.on_key)
 
-    def update(self,dt):
+    def update(self, dt):
         self.x += (self.keystate[3] - self.keystate[2]) * 200 * dt
         self.y += (self.keystate[0] - self.keystate[1]) * 200 * dt
 

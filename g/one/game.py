@@ -5,6 +5,7 @@ from g.one.ship import Ship
 from g.one.resources import Resources
 from g.one.options import Options
 
+
 class Game(pyglet.event.EventDispatcher):
     def __init__(self, window, players=1):
         window.push_handlers(self)

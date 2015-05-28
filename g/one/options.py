@@ -35,7 +35,7 @@ class Options():
     @staticmethod
     def load():
         Options.options = Options.options_from_file(Options.filename)
-        if Options.options == None:
+        if Options.options is None:
             Options.options = Options.default_options
 
     @staticmethod
