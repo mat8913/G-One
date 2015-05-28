@@ -1,15 +1,18 @@
 import pyglet
 from pyglet.window import key
 
+
 class MenuItem():
     def __init__(self, menu, text, x=0, y=0):
         self.menu = menu
-        self.label = pyglet.text.Label(text,
-                                  font_name='Times New Roman',
-                                  font_size=16,
-                                  x=x, y=y,
-                                  anchor_x='center', anchor_y='center',
-                                  batch=menu.batch)
+        self.label = pyglet.text.Label(
+          text,
+          font_name='Times New Roman',
+          font_size=16,
+          x=x, y=y,
+          anchor_x='center', anchor_y='center',
+          batch=menu.batch
+        )
 
     def on_key_release(self, symbol, modifiers):
         pass
@@ -29,6 +32,7 @@ class MenuAction(MenuItem):
     def on_key_release(self, symbol, modifiers):
         if symbol == key.ENTER:
             self.action()
+
 
 class KeySelector(MenuItem):
     def __init__(self, menu, key, x=0, y=0):

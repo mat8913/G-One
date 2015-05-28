@@ -64,23 +64,32 @@ class MainMenu(Menu):
         self.window.change_stage(NewGameMenu(self.window))
 
 
-
 class NewGameMenu(Menu):
     def __init__(self, window):
         Menu.__init__(self, window)
-        self.title = pyglet.text.Label('G - One',
-                                  font_name='Times New Roman',
-                                  font_size=36,
-                                  x=427, y=400,
-                                  color=(255, 255, 0, 255),
-                                  anchor_x='center', anchor_y='center',
-                                  batch=self.batch)
-        self.options.append(MenuItem(self, "New Game", 427, 160))
-        self.options.append(MenuItem(self, "Load Game", 427, 130))
-        self.options.append(MenuItem(self, "Highscore List", 427, 100))
-        self.options.append(MenuItem(self, "Options", 427, 70))
-        tmp = []
-        tmp.append(MenuAction(self, "Back", lambda: window.change_stage(MainMenu(window)), 100, 40))
-        tmp.append(MenuAction(self, "Start", lambda: window.change_stage(Game(window)), 754, 40))
-        self.options.append(HorizontalSelection(tmp))
+        self.title = pyglet.text.Label(
+          'G - One',
+          font_name='Times New Roman',
+          font_size=36,
+          x=427, y=400,
+          color=(255, 255, 0, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.options = [
+          MenuItem(self, "New Game", 427, 160),
+          MenuItem(self, "Load Game", 427, 130),
+          MenuItem(self, "Highscore List", 427, 100),
+          MenuItem(self, "Options", 427, 70),
+          HorizontalSelection([
+            MenuAction(self, "Back", self.back_pressed, 100, 40),
+            MenuAction(self, "Start", self.start_pressed, 754, 40)
+          ])
+        ]
         self.selected = 0
+
+    def back_pressed(self):
+        self.window.change_stage(MainMenu(self.window))
+
+    def start_pressed(self):
+        self.window.change_stage(Game(self.window))
