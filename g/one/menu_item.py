@@ -58,6 +58,37 @@ class KeySelector(MenuItem):
         self.label.text = key.symbol_string(value)
 
 
+class OptionSelector(MenuItem):
+    def __init__(self, menu, text, options, x, y):
+        MenuItem.__init__(self, menu, text, x, y)
+        self.label.anchor_x = 'left'
+        self.option_label = pyglet.text.Label(
+          "<< >>",
+          font_name='Times New Roman',
+          font_size=16,
+          x=854-x, y=y,
+          anchor_x='right', anchor_y='center',
+          batch=menu.batch
+        )
+        self.options = options
+        self.selected = 0
+
+    def on_key_release(self, symbol, modifiers):
+        if symbol == key.LEFT:
+            self.selected = max(self.selected-1, 0)
+        elif symbol == key.RIGHT:
+            self.selected = min(self.selected+1, len(self.options)-1)
+
+    @property
+    def selected(self):
+        return self._selected
+
+    @selected.setter
+    def selected(self, value):
+        self._selected = value
+        self.option_label.text = "<< " + self.options[value] + " >>"
+
+
 class HorizontalSelection():
     def __init__(self, options):
         self.options = options
