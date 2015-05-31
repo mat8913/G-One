@@ -9,21 +9,37 @@ class GameSprite(pyglet.sprite.Sprite):
         pyglet.clock.schedule_interval(self.__update, 1/60)
         self.stage = stage
 
-    def __get_left(self):
+    @property
+    def left(self):
         return self.x
-    left = property(__get_left)
 
-    def __get_right(self):
+    @left.setter
+    def left(self, value):
+        self.x = value
+
+    @property
+    def right(self):
         return self.x + self.image.width
-    right = property(__get_right)
 
-    def __get_top(self):
+    @right.setter
+    def right(self, value):
+        self.x = value - self.image.width
+
+    @property
+    def top(self):
         return self.y + self.image.height
-    top = property(__get_top)
 
-    def __get_bottom(self):
+    @top.setter
+    def top(self, value):
+        self.y = value - self.image.height
+
+    @property
+    def bottom(self):
         return self.y
-    bottom = property(__get_bottom)
+
+    @bottom.setter
+    def bottom(self, value):
+        self.y = value
 
     def __update(self, dt):
         if self.stage.paused:
@@ -44,3 +60,15 @@ class GameSprite(pyglet.sprite.Sprite):
             if (self.intersect(sprite)):
                 return sprite
         return None
+
+    def onscreen(self):
+        return not (self.left < 0 or
+                    self.right > 854 or
+                    self.bottom < 0 or
+                    self.top > 480)
+
+    def keep_onscreen(self):
+        self.left = max(0, self.left)
+        self.right = min(854, self.right)
+        self.bottom = max(0, self.bottom)
+        self.top = min(480, self.top)
