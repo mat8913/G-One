@@ -10,15 +10,11 @@ class Game(pyglet.event.EventDispatcher):
     def __init__(self, window, play_as, difficulty, players=1):
         window.push_handlers(self)
         self.batch = pyglet.graphics.Batch()
-        self.register_event_type('player1')
-        self.register_event_type('player2')
-        self.players = players
         self.paused = False
-        self.register_event_type('player1')
-        self.ship1_sprite = Ship(self, 1)
-        if self.players == 2:
-            self.register_event_type('player2')
-            self.ship2_sprite = Ship(self, 2)
+        self.players = []
+        for i in range(1, players+1):
+            self.register_event_type('player' + str(i))
+            self.players.append(Ship(self, i))
 
     def draw(self):
         self.batch.draw()
@@ -27,13 +23,15 @@ class Game(pyglet.event.EventDispatcher):
         if symbol == key.ESCAPE:
             self.paused = not self.paused
             return
-        for k, v in Options.options['controls'][0].items():
-            if symbol == v:
-                self.dispatch_event('player1', k, True)
-                return
+        for player in range(1, len(self.players)+1):
+            for k, v in Options.options['controls'][player-1].items():
+                if symbol == v:
+                    self.dispatch_event('player' + str(player), k, True)
+                    return
 
     def on_key_release(self, symbol, modifiers):
-        for k, v in Options.options['controls'][0].items():
-            if symbol == v:
-                self.dispatch_event('player1', k, False)
-                return
+        for player in range(1, len(self.players)+1):
+            for k, v in Options.options['controls'][player-1].items():
+                if symbol == v:
+                    self.dispatch_event('player' + str(player), k, False)
+                    return
