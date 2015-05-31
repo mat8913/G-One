@@ -7,7 +7,7 @@ from g.one.options import Options
 
 
 class Game(pyglet.event.EventDispatcher):
-    def __init__(self, window, players=1):
+    def __init__(self, window, play_as, difficulty, players=1):
         window.push_handlers(self)
         self.batch = pyglet.graphics.Batch()
         self.register_event_type('player1')
