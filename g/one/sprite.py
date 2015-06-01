@@ -9,6 +9,10 @@ class GameSprite(pyglet.sprite.Sprite):
         pyglet.clock.schedule_interval(self.__update, 1/60)
         self.stage = stage
 
+    def delete(self):
+        pyglet.clock.unschedule(self.__update)
+        pyglet.sprite.Sprite.delete(self)
+
     @property
     def left(self):
         return self.x

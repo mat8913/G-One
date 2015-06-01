@@ -2,13 +2,13 @@ import pyglet
 from pyglet.window import key
 
 from g.one.menu_item import *
-from g.one.game import Game
 
 
 class Menu():
-    def __init__(self, window):
-        window.push_handlers(self)
-        self.window = window
+    def __init__(self, window=None):
+        if window is not None:
+            window.push_handlers(self)
+            self.window = window
         self.batch = pyglet.graphics.Batch()
         self._selected = 0
         self.options = []
@@ -91,6 +91,7 @@ class NewGameMenu(Menu):
         self.window.change_stage(MainMenu(self.window))
 
     def start_pressed(self):
+        from g.one.game import Game
         play_as = self.options[0].selected
         difficulty = self.options[1].selected
         players = self.options[2].selected + 1
