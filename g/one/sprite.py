@@ -15,19 +15,31 @@ class GameSprite(pyglet.sprite.Sprite):
 
     @property
     def left(self):
-        return self.x
+        if self.rotation <= 90:
+            return self.x
+        else:
+            return self.x - self.image.width
 
     @left.setter
     def left(self, value):
-        self.x = value
+        if self.rotation <= 90:
+            self.x = value
+        else:
+            self.x = value + self.image.width
 
     @property
     def right(self):
-        return self.x + self.image.width
+        if self.rotation <= 90:
+            return self.x + self.image.width
+        else:
+            return self.x
 
     @right.setter
     def right(self, value):
-        self.x = value - self.image.width
+        if self.rotation <= 90:
+            self.x = value - self.image.width
+        else:
+            self.x = value
 
     @property
     def hcenter(self):
@@ -39,19 +51,31 @@ class GameSprite(pyglet.sprite.Sprite):
 
     @property
     def top(self):
-        return self.y + self.image.height
+        if self.rotation <= 90:
+            return self.y + self.image.height
+        else:
+            return self.y
 
     @top.setter
     def top(self, value):
-        self.y = value - self.image.height
+        if self.rotation <= 90:
+            self.y = value - self.image.height
+        else:
+            self.y = value
 
     @property
     def bottom(self):
-        return self.y
+        if self.rotation <= 90:
+            return self.y
+        else:
+            return self.y - self.image.height
 
     @bottom.setter
     def bottom(self, value):
-        self.y = value
+        if self.rotation <= 90:
+            self.y = value
+        else:
+            self.y = value + self.image.height
 
     @property
     def vcenter(self):
