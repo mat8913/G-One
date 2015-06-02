@@ -15,7 +15,6 @@ class Game(pyglet.event.EventDispatcher):
         self.pause_menu = None
         self.players = []
         for i in range(1, players+1):
-            self.register_event_type('player' + str(i))
             self.players.append(Ship(self, i))
 
     def draw(self):
@@ -30,19 +29,19 @@ class Game(pyglet.event.EventDispatcher):
         if symbol == key.ESCAPE:
             self.pause_menu = PauseMenu(self)
             return
-        for player in range(1, len(self.players)+1):
-            for k, v in Options.options['controls'][player-1].items():
+        for i, player in enumerate(self.players):
+            for k, v in Options.options['controls'][i].items():
                 if symbol == v:
-                    self.dispatch_event('player' + str(player), k, True)
+                    player.on_key(k, True)
                     return
 
     def on_key_release(self, symbol, modifiers):
         if self.paused:
             return self.pause_menu.on_key_release(symbol, modifiers)
-        for player in range(1, len(self.players)+1):
-            for k, v in Options.options['controls'][player-1].items():
+        for i, player in enumerate(self.players):
+            for k, v in Options.options['controls'][i].items():
                 if symbol == v:
-                    self.dispatch_event('player' + str(player), k, False)
+                    player.on_key(k, False)
                     return
 
     def change_pause(self, pause_menu):

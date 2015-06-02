@@ -10,8 +10,6 @@ class Ship(GameSprite):
         GameSprite.__init__(self, stage, Resources.ship_image)
         self.player = player
         self.keystate = [False] * 4
-        d = {("player" + str(player)): self.on_key}
-        stage.push_handlers(**d)
 
     def update(self, dt):
         self.x += (self.keystate[3] - self.keystate[2]) * 200 * dt
