@@ -9,6 +9,7 @@ class Resources():
         pyglet.resource.reindex()
         Resources.ship_image = Resources.load_image("ship.png")
 
+    @staticmethod
     def load_image(filename):
         with pyglet.resource.file(filename) as f:
             decoder = PNGImageDecoder()
