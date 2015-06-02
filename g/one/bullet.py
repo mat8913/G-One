@@ -7,7 +7,7 @@ from g.one.sprite import GameSprite
 class Bullet(GameSprite):
     def __init__(self, stage, pos, vel):
         GameSprite.__init__(self, stage, Resources.bullet_image)
-        self.x, self.y = pos
+        self.hcenter, self.vcenter = pos
         self.vel = vel
         self.rotation = 90 - math.degrees(math.atan2(vel[1], vel[0]))
 

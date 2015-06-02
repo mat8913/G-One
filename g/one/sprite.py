@@ -30,6 +30,14 @@ class GameSprite(pyglet.sprite.Sprite):
         self.x = value - self.image.width
 
     @property
+    def hcenter(self):
+        return (self.left+self.right) / 2
+
+    @hcenter.setter
+    def hcenter(self, value):
+        self.x = value - self.image.width/2
+
+    @property
     def top(self):
         return self.y + self.image.height
 
@@ -44,6 +52,14 @@ class GameSprite(pyglet.sprite.Sprite):
     @bottom.setter
     def bottom(self, value):
         self.y = value
+
+    @property
+    def vcenter(self):
+        return (self.top+self.bottom) / 2
+
+    @vcenter.setter
+    def vcenter(self, value):
+        self.y = value - self.image.height/2
 
     def __update(self, dt):
         if self.stage.paused:
