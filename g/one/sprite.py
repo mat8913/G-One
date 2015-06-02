@@ -66,10 +66,10 @@ class GameSprite(pyglet.sprite.Sprite):
         return None
 
     def onscreen(self):
-        return not (self.left < 0 or
-                    self.right > 854 or
-                    self.bottom < 0 or
-                    self.top > 480)
+        return not (self.right < 0 or
+                    self.left > 854 or
+                    self.top < 0 or
+                    self.bottom > 480)
 
     def keep_onscreen(self):
         self.left = max(0, self.left)

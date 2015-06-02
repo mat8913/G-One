@@ -8,6 +8,7 @@ class Resources():
         pyglet.resource.path = ['@g.one.resources']
         pyglet.resource.reindex()
         Resources.ship_image = Resources.load_image("ship.png")
+        Resources.bullet_image = Resources.load_image("bullet.png")
 
     @staticmethod
     def load_image(filename):
