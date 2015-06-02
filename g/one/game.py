@@ -2,7 +2,7 @@ import pyglet
 from pyglet.window import key
 
 from g.one.pause_menu import PauseMenu
-from g.one.ship import Ship
+from g.one.player import Player
 from g.one.resources import Resources
 from g.one.options import Options
 
@@ -15,7 +15,7 @@ class Game(pyglet.event.EventDispatcher):
         self.pause_menu = None
         self.players = []
         for i in range(1, players+1):
-            self.players.append(Ship(self, i))
+            self.players.append(Player(self, i))
 
     def draw(self):
         if self.paused:

@@ -5,10 +5,9 @@ from g.one.resources import Resources
 from g.one.sprite import GameSprite
 
 
-class Ship(GameSprite):
-    def __init__(self, stage, player):
+class Player(GameSprite):
+    def __init__(self, stage, player_number):
         GameSprite.__init__(self, stage, Resources.ship_image)
-        self.player = player
         self.keystate = [False] * 4
 
     def update(self, dt):
