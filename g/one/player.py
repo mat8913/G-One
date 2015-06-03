@@ -20,7 +20,8 @@ class Player(GameSprite):
         self.cooldown = self.cooldown - dt
         if self.keystate[4] and self.cooldown <= 0:
             self.cooldown = 0.125
-            Bullet(self.stage, self.earth, (self.hcenter, self.vcenter), (0, 500))
+            bullet_pos = (self.hcenter, self.vcenter)
+            Bullet(self.stage, self.earth, bullet_pos, (0, 500))
 
     def on_key(self, direction, pressed):
         if direction == key.UP:

@@ -22,6 +22,7 @@ class Enemy(GameSprite):
             self.cooldown = 0.5
             bullet_vel = self.direction_to(self.stage.get_target())
             bullet_vel = tuple(x*500 for x in bullet_vel)
-            Bullet(self.stage, self.earth, (self.hcenter, self.vcenter), bullet_vel)
+            bullet_pos = (self.hcenter, self.vcenter)
+            Bullet(self.stage, self.earth, bullet_pos, bullet_vel)
         if self.keep_onscreen():
             self.vel = tuple(-x for x in self.vel)
