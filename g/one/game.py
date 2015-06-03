@@ -15,6 +15,7 @@ class Game(pyglet.event.EventDispatcher):
         self.batch = pyglet.graphics.Batch()
         self.pause_menu = None
         self.players = []
+        self.__target = -1
         for i in range(1, players+1):
             self.players.append(Player(self, self.earth, i))
 
@@ -68,3 +69,9 @@ class Game(pyglet.event.EventDispatcher):
     @property
     def paused(self):
         return self.pause_menu is not None
+
+    def get_target(self):
+        self.__target = self.__target + 1
+        if self.__target >= len(self.players):
+            self.__target = 0
+        return self.players[self.__target]
