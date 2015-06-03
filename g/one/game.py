@@ -3,6 +3,7 @@ from pyglet.window import key
 
 from g.one.pause_menu import PauseMenu
 from g.one.player import Player
+from g.one.enemy import Enemy
 from g.one.resources import Resources
 from g.one.options import Options
 
@@ -15,9 +16,11 @@ class Game(pyglet.event.EventDispatcher):
         self.batch = pyglet.graphics.Batch()
         self.pause_menu = None
         self.players = []
+        self.enemies = []
         self.__target = -1
         for i in range(1, players+1):
             self.players.append(Player(self, self.earth, i))
+        self.enemies.append(Enemy(self, not earth, (0, 400), (100, 0)))
 
     def draw(self):
         if self.paused:
@@ -60,6 +63,9 @@ class Game(pyglet.event.EventDispatcher):
         for player in self.players:
             player.delete()
         del self.players
+        for enemy in self.enemies:
+            enemy.delete()
+        del self.enemies
         try:
             while True:
                 self.pop_handlers()
