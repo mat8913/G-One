@@ -7,10 +7,11 @@ from g.one.bullet import Bullet
 
 
 class Player(GameSprite):
-    def __init__(self, stage, player_number):
+    def __init__(self, stage, earth, player_number):
         GameSprite.__init__(self, stage, Resources.ship_image)
         self.keystate = [False] * 5
         self.cooldown = 0
+        self.earth = earth
 
     def update(self, dt):
         self.x += (self.keystate[3] - self.keystate[2]) * 200 * dt
@@ -19,7 +20,7 @@ class Player(GameSprite):
         self.cooldown = self.cooldown - dt
         if self.keystate[4] and self.cooldown <= 0:
             self.cooldown = 0.125
-            Bullet(self.stage, (self.hcenter, self.vcenter), (0, 500))
+            Bullet(self.stage, self.earth, (self.hcenter, self.vcenter), (0, 500))
 
     def on_key(self, direction, pressed):
         if direction == key.UP:

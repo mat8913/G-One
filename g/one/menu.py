@@ -92,8 +92,8 @@ class NewGameMenu(Menu):
 
     def start_pressed(self):
         from g.one.game import Game
-        play_as = self.options[0].selected
+        earth = self.options[0].selected == 0
         difficulty = self.options[1].selected
         players = self.options[2].selected + 1
-        game = Game(self.window, play_as, difficulty, players)
+        game = Game(self.window, earth, difficulty, players)
         self.window.change_stage(game)

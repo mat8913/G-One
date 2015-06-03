@@ -5,8 +5,12 @@ from g.one.sprite import GameSprite
 
 
 class Bullet(GameSprite):
-    def __init__(self, stage, pos, vel):
-        GameSprite.__init__(self, stage, Resources.bullet_image)
+    def __init__(self, stage, earth, pos, vel):
+        if earth:
+            bullet_image = Resources.earth_bullet_image
+        else:
+            bullet_image = Resources.alien_bullet_image
+        GameSprite.__init__(self, stage, bullet_image)
         self.hcenter, self.vcenter = pos
         self.vel = vel
         self.rotation = 90 - math.degrees(math.atan2(vel[1], vel[0]))

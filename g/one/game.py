@@ -8,14 +8,15 @@ from g.one.options import Options
 
 
 class Game(pyglet.event.EventDispatcher):
-    def __init__(self, window, play_as, difficulty, players=1):
+    def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
         self.window = window
+        self.earth = earth
         self.batch = pyglet.graphics.Batch()
         self.pause_menu = None
         self.players = []
         for i in range(1, players+1):
-            self.players.append(Player(self, i))
+            self.players.append(Player(self, self.earth, i))
 
     def draw(self):
         if self.paused:
