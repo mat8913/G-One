@@ -1,3 +1,4 @@
+import math
 import pyglet
 
 from g.one.resources import Resources
@@ -126,3 +127,9 @@ class GameSprite(pyglet.sprite.Sprite):
             self.top = 480
             ret = True
         return ret
+
+    def direction_to(self, sprite):
+        x = sprite.hcenter - self.hcenter
+        y = sprite.vcenter - self.vcenter
+        magnitude = math.sqrt(x*x + y*y)
+        return tuple(a / magnitude for a in (x, y))
