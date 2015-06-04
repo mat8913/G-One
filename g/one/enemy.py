@@ -21,7 +21,7 @@ class Enemy(GameSprite):
         self.cooldown = self.cooldown - dt
         if self.cooldown <= 0:
             self.cooldown = 0.5
-            bullet_vel = self.direction_to(self.stage.get_target())
+            bullet_vel = self.direction_to_sprite(self.stage.get_target())
             bullet_vel = tuple(x*500 for x in bullet_vel)
             bullet_pos = (self.hcenter, self.vcenter)
             Bullet(self.stage, self.earth, bullet_pos, bullet_vel)

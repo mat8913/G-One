@@ -128,8 +128,11 @@ class GameSprite(pyglet.sprite.Sprite):
             ret += ["top"]
         return ret
 
-    def direction_to(self, sprite):
-        x = sprite.hcenter - self.hcenter
-        y = sprite.vcenter - self.vcenter
+    def direction_to_ords(self, ords):
+        x = ords[0] - self.hcenter
+        y = ords[1] - self.vcenter
         magnitude = math.sqrt(x*x + y*y)
         return tuple(a / magnitude for a in (x, y))
+
+    def direction_to_sprite(self, sprite):
+        return self.direction_to_ords((sprite.hcenter, sprite.vcenter))
