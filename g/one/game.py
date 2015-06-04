@@ -6,6 +6,7 @@ from g.one.player import Player
 from g.one.enemy import Enemy
 from g.one.resources import Resources
 from g.one.options import Options
+from g.one.healthbar import Healthbar
 
 
 class Game(pyglet.event.EventDispatcher):
@@ -17,10 +18,13 @@ class Game(pyglet.event.EventDispatcher):
         self.pause_menu = None
         self.players = []
         self.enemies = []
+        self.healthbars = []
         self.deleted = False
         self.__target = -1
         for i in range(1, players+1):
             self.players.append(Player(self, self.earth, i))
+        for i, e in enumerate(self.players):
+            self.healthbars.append(Healthbar(e, 10 * i))
         self.enemies.append(Enemy(self, not earth, (0, 400), (100, 0)))
 
     def draw(self):
@@ -28,6 +32,8 @@ class Game(pyglet.event.EventDispatcher):
             self.pause_menu.draw()
         else:
             self.batch.draw()
+            for healthbar in self.healthbars:
+                healthbar.draw()
 
     def on_key_press(self, symbol, modifiers):
         if self.paused:
@@ -73,6 +79,7 @@ class Game(pyglet.event.EventDispatcher):
                 self.pop_handlers()
         except AssertionError:
             pass
+        del self.healthbars
 
     @property
     def paused(self):
