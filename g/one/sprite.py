@@ -113,19 +113,19 @@ class GameSprite(pyglet.sprite.Sprite):
                     self.bottom > 480)
 
     def keep_onscreen(self):
-        ret = False
+        ret = []
         if 0 > self.left:
             self.left = 0
-            ret = True
+            ret += ["left"]
         if 854 < self.right:
             self.right = 854
-            ret = True
+            ret += ["right"]
         if 0 > self.bottom:
             self.bottom = 0
-            ret = True
+            ret += ["bottom"]
         if 480 < self.top:
             self.top = 480
-            ret = True
+            ret += ["top"]
         return ret
 
     def direction_to(self, sprite):
