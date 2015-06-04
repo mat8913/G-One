@@ -12,6 +12,7 @@ class Player(GameSprite):
         self.keystate = [False] * 5
         self.cooldown = 0
         self.earth = earth
+        self.health = 100
 
     def update(self, dt):
         self.x += (self.keystate[3] - self.keystate[2]) * 200 * dt
@@ -34,3 +35,6 @@ class Player(GameSprite):
             self.keystate[3] = pressed
         elif direction == key.SPACE:
             self.keystate[4] = pressed
+
+    def hit(self):
+        self.health -= 1

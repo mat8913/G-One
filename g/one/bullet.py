@@ -14,9 +14,22 @@ class Bullet(GameSprite):
         self.hcenter, self.vcenter = pos
         self.vel = vel
         self.rotation = 90 - math.degrees(math.atan2(vel[1], vel[0]))
+        self.belong_to_player = earth == stage.earth
 
     def update(self, dt):
+        if self.stage.deleted:
+            self.delete()
+            return
         self.x += self.vel[0] * dt
         self.y += self.vel[1] * dt
+        if self.belong_to_player:
+            collision = self.collide_once(self.stage.enemies)
+        else:
+            collision = self.collide_once(self.stage.players)
+        if collision is not None:
+            collision.hit()
+            self.delete()
+            return
+
         if not self.onscreen():
             self.delete()

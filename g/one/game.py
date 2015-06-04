@@ -17,6 +17,7 @@ class Game(pyglet.event.EventDispatcher):
         self.pause_menu = None
         self.players = []
         self.enemies = []
+        self.deleted = False
         self.__target = -1
         for i in range(1, players+1):
             self.players.append(Player(self, self.earth, i))
@@ -58,13 +59,14 @@ class Game(pyglet.event.EventDispatcher):
         self.window.change_stage(MainMenu(self.window))
 
     def delete(self):
+        self.deleted = True
         self.window.remove_handlers(self)
         self.change_pause(None)
         for player in self.players:
             player.delete()
         del self.players
-        for enemy in self.enemies:
-            enemy.delete()
+        while self.enemies:
+            self.enemies[0].delete()
         del self.enemies
         try:
             while True:
@@ -81,3 +83,6 @@ class Game(pyglet.event.EventDispatcher):
         if self.__target >= len(self.players):
             self.__target = 0
         return self.players[self.__target]
+
+    def delete_enemy(self, enemy):
+        self.enemies.remove(enemy)

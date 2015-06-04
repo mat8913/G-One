@@ -13,6 +13,7 @@ class Enemy(GameSprite):
         self.vel = vel
         self.cooldown = 0
         self.earth = earth
+        self.health = 5
 
     def update(self, dt):
         self.x += self.vel[0] * dt
@@ -26,3 +27,12 @@ class Enemy(GameSprite):
             Bullet(self.stage, self.earth, bullet_pos, bullet_vel)
         if self.keep_onscreen():
             self.vel = tuple(-x for x in self.vel)
+
+    def hit(self):
+        self.health -= 1
+        if self.health <= 0:
+            self.delete()
+
+    def delete(self):
+        self.stage.delete_enemy(self)
+        GameSprite.delete(self)
