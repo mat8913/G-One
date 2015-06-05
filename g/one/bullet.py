@@ -47,3 +47,13 @@ class BouncyBullet(Bullet):
     def update(self, dt):
         self.bounce()
         Bullet.update(self, dt)
+
+
+class HomingBullet(Bullet):
+    def update(self, dt):
+        if self.keep_onscreen():
+            dx, dy = self.vel
+            magnitude = math.sqrt(dx*dx + dy*dy)
+            dx, dy = self.direction_to_sprite(self.stage.get_target())
+            self.vel = tuple(x*magnitude for x in (dx, dy))
+        Bullet.update(self, dt)
