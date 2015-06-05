@@ -24,6 +24,10 @@ class Enemy(GameSprite):
             bullet_pos = (self.hcenter, self.vcenter)
             Bullet(self.stage, self.earth, bullet_pos, (0, -500))
         self.bounce()
+        collision = self.collide_once(self.stage.players)
+        if collision is not None:
+            self.hit()
+            collision.hit()
 
     def hit(self):
         self.health -= 1
