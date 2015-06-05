@@ -43,7 +43,7 @@ class Bullet(GameSprite):
         self.rotation = 90 - math.degrees(math.atan2(value[1], value[0]))
 
 
-class ChaosBullet(Bullet):
+class BouncyBullet(Bullet):
     def update(self, dt):
         self.bounce()
         Bullet.update(self, dt)
