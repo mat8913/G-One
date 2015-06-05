@@ -13,7 +13,6 @@ class Bullet(GameSprite):
         GameSprite.__init__(self, stage, bullet_image)
         self.hcenter, self.vcenter = pos
         self.vel = vel
-        self.rotation = 90 - math.degrees(math.atan2(vel[1], vel[0]))
         self.belong_to_player = earth == stage.earth
 
     def update(self, dt):
@@ -34,10 +33,17 @@ class Bullet(GameSprite):
         if not self.onscreen():
             self.delete()
 
+    @property
+    def vel(self):
+        return self._vel
+
+    @vel.setter
+    def vel(self, value):
+        self._vel = value
+        self.rotation = 90 - math.degrees(math.atan2(value[1], value[0]))
+
 
 class ChaosBullet(Bullet):
     def update(self, dt):
-        if self.bounce():
-            self.rotation = 90 - math.degrees(math.atan2(self.vel[1],
-                                                         self.vel[0]))
-        Bullet.update(self,dt)
+        self.bounce()
+        Bullet.update(self, dt)
