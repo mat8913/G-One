@@ -7,6 +7,7 @@ from g.one.enemy import Enemy
 from g.one.resources import Resources
 from g.one.options import Options
 from g.one.healthbar import Healthbar
+from g.one.spawner import Level1Spawner
 
 
 class Game(pyglet.event.EventDispatcher):
@@ -25,7 +26,7 @@ class Game(pyglet.event.EventDispatcher):
             self.players.append(Player(self, self.earth, i))
         for i, e in enumerate(self.players):
             self.healthbars.append(Healthbar(e, 10 * i))
-        self.enemies.append(Enemy(self, not earth, (0, 400), (100, 0)))
+        self.spawner = Level1Spawner(self, not self.earth)
 
     def draw(self):
         if self.paused:
@@ -34,6 +35,10 @@ class Game(pyglet.event.EventDispatcher):
             self.batch.draw()
             for healthbar in self.healthbars:
                 healthbar.draw()
+
+            spawn = self.spawner.spawn(len(self.enemies))
+            if spawn is not None:
+                self.enemies += spawn
 
     def on_key_press(self, symbol, modifiers):
         if self.paused:
