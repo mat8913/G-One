@@ -48,7 +48,7 @@ class GameSprite(pyglet.sprite.Sprite):
 
     @hcenter.setter
     def hcenter(self, value):
-        self.x = value - self.image.width/2
+        self.right = value + self.image.width/2
 
     @property
     def top(self):
@@ -84,7 +84,7 @@ class GameSprite(pyglet.sprite.Sprite):
 
     @vcenter.setter
     def vcenter(self, value):
-        self.y = value - self.image.height/2
+        self.bottom = value - self.image.height/2
 
     def __update(self, dt):
         if self.stage.paused:
