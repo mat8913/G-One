@@ -37,25 +37,7 @@ class Bullet(GameSprite):
 
 class ChaosBullet(Bullet):
     def update(self, dt):
-        if self.stage.deleted:
-            self.delete()
-            return
-        self.x += self.vel[0] * dt
-        self.y += self.vel[1] * dt
-        if self.belong_to_player:
-            collision = self.collide_once(self.stage.enemies)
-        else:
-            collision = self.collide_once(self.stage.players)
-        if collision is not None:
-            collision.hit()
-            self.delete()
-            return
-
-        dx, dy = self.vel
-        offscreen = self.keep_onscreen()
-        if "left" in offscreen or "right" in offscreen:
-            dx = -dx
-        if "top" in offscreen or "bottom" in offscreen:
-            dy = -dy
-        self.vel = (dx, dy)
-        self.rotation = 90 - math.degrees(math.atan2(self.vel[1], self.vel[0]))
+        if self.bounce():
+            self.rotation = 90 - math.degrees(math.atan2(self.vel[1],
+                                                         self.vel[0]))
+        Bullet.update(self,dt)

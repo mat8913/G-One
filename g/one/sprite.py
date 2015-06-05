@@ -136,3 +136,16 @@ class GameSprite(pyglet.sprite.Sprite):
 
     def direction_to_sprite(self, sprite):
         return self.direction_to_ords((sprite.hcenter, sprite.vcenter))
+
+    def bounce(self):
+        ret = False
+        dx, dy = self.vel
+        offscreen = self.keep_onscreen()
+        if "left" in offscreen or "right" in offscreen:
+            dx = -dx
+            ret = True
+        if "top" in offscreen or "bottom" in offscreen:
+            dy = -dy
+            ret = True
+        self.vel = (dx, dy)
+        return ret

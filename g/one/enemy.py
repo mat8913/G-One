@@ -25,8 +25,7 @@ class Enemy(GameSprite):
             bullet_vel = tuple(x*500 for x in bullet_vel)
             bullet_pos = (self.hcenter, self.vcenter)
             Bullet(self.stage, self.earth, bullet_pos, bullet_vel)
-        if self.keep_onscreen():
-            self.vel = tuple(-x for x in self.vel)
+        self.bounce()
 
     def hit(self):
         self.health -= 1
