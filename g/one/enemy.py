@@ -46,7 +46,7 @@ class Enemy(GameSprite):
         self.health = health
 
     def update(self, dt):
-        """Update method called every (1/60) seconds. Makes the enemy move
+        """Update method called every (1/60) seconds.  Makes the enemy move
         according to velocity, bounce if it touches the edge of the screen and
         cause mutual damage if it touches a player.
 
