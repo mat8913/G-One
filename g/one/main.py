@@ -19,10 +19,12 @@ import pyglet
 from g.one.resources import Resources
 from g.one.game_window import GameWindow
 from g.one.options import Options
+from g.one.background_music import BackgroundMusic
 
 
 def main():
     Resources.init()
+    BackgroundMusic.init()
     Options.load()
     window = GameWindow()
     pyglet.app.run()
