@@ -16,7 +16,7 @@
 
 import pyglet
 
-from g.one.enemy import Enemy
+from g.one.enemy import BasicEnemy, HorizontalTrackerEnemy
 
 
 class EnemySpawner():
@@ -40,28 +40,34 @@ class Level1Spawner(EnemySpawner):
         if self.cooldown <= 0 and amount < 6:
             self.cooldown = 1
             self.count += 1
+            rightmoving = [self.game, self.earth, (0, 400), (100, 0)]
+            leftmoving = [self.game, self.earth, (854, 400), (-100, 0)]
+            rightbouncing = [self.game, self.earth, (0, 400), (70, -70)]
+            leftbouncing = [self.game, self.earth, (854, 400), (-70, -70)]
+            tracking = [self.game, self.earth, 400, -70]
             if self.count < 10:
                 return [
-                         Enemy(self.game, self.earth, (-1, 400), (100, 0)),
+                         BasicEnemy(*rightmoving)
                        ]
             if self.count < 20:
                 return [
-                         Enemy(self.game, self.earth, (-1, 400), (100, 0)),
-                         Enemy(self.game, self.earth, (854, 450), (-100, 0))
+                         BasicEnemy(*rightmoving),
+                         BasicEnemy(*leftmoving)
                        ]
             if self.count < 21:
                 if amount == 0:
                     return [
-                           Enemy(self.game, self.earth, (-1, 400), (70, -70)),
-                           Enemy(self.game, self.earth, (854, 400), (-70, -70))
+                           BasicEnemy(*rightbouncing),
+                           BasicEnemy(*leftbouncing)
                            ]
                 else:
                     self.count -= 1
                     return []
             if self.count < 30:
                 return [
-                         Enemy(self.game, self.earth, (-1, 400), (70, -70)),
-                         Enemy(self.game, self.earth, (854, 400), (-70, -70))
+                         BasicEnemy(*rightbouncing),
+                         BasicEnemy(*leftbouncing),
+                         HorizontalTrackerEnemy(*tracking)
                        ]
             return None
         else:
