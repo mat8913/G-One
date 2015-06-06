@@ -24,7 +24,7 @@ from g.one.menu import MainMenu
 class GameWindow(pyglet.window.Window):
     def __init__(self):
         pyglet.window.Window.__init__(self, width=854, height=480,
-                                      resizable=True)
+                                      caption="G - One", resizable=True)
         self.current_stage = MainMenu(self)
 
     def on_draw(self):
