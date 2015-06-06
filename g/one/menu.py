@@ -24,7 +24,7 @@ class Menu():
     def __init__(self, window=None):
         if window is not None:
             window.push_handlers(self)
-            self.window = window
+        self.window = window
         self.batch = pyglet.graphics.Batch()
         self._selected = 0
         self.options = []
@@ -51,7 +51,8 @@ class Menu():
         self.options[self._selected].set_selected(True)
 
     def delete(self):
-        self.window.remove_handlers(self)
+        if self.window is not None:
+            self.window.remove_handlers(self)
         self.options = None
 
 

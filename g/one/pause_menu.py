@@ -47,6 +47,3 @@ class PauseMenu(Menu):
 
     def exit_pressed(self):
         self.game.exit()
-
-    def delete(self):
-        self.options = None
