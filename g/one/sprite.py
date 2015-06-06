@@ -22,6 +22,8 @@ from g.one.resources import Resources
 
 class GameSprite(pyglet.sprite.Sprite):
     def __init__(self, stage, img):
+        img.anchor_x = img.width // 2
+        img.anchor_y = img.height // 2
         pyglet.sprite.Sprite.__init__(self, img=img, batch=stage.batch)
         pyglet.clock.schedule_interval(self.__update, 1/60)
         self.stage = stage
@@ -32,75 +34,51 @@ class GameSprite(pyglet.sprite.Sprite):
 
     @property
     def left(self):
-        if self.rotation <= 90:
-            return self.x
-        else:
-            return self.x - self.image.width
+        return self.x - self.image.width/2
 
     @left.setter
     def left(self, value):
-        if self.rotation <= 90:
-            self.x = value
-        else:
-            self.x = value + self.image.width
+        self.x = value + self.image.width/2
 
     @property
     def right(self):
-        if self.rotation <= 90:
-            return self.x + self.image.width
-        else:
-            return self.x
+        return self.x + self.image.width/2
 
     @right.setter
     def right(self, value):
-        if self.rotation <= 90:
-            self.x = value - self.image.width
-        else:
-            self.x = value
+        self.x = value - self.image.width/2
 
     @property
     def hcenter(self):
-        return (self.left+self.right) / 2
+        return self.x
 
     @hcenter.setter
     def hcenter(self, value):
-        self.right = value + self.image.width/2
+        self.x = value
 
     @property
     def top(self):
-        if self.rotation <= 90:
-            return self.y + self.image.height
-        else:
-            return self.y
+        return self.y + self.image.height/2
 
     @top.setter
     def top(self, value):
-        if self.rotation <= 90:
-            self.y = value - self.image.height
-        else:
-            self.y = value
+        self.y = value - self.image.height/2
 
     @property
     def bottom(self):
-        if self.rotation <= 90:
-            return self.y
-        else:
-            return self.y - self.image.height
+        return self.y - self.image.height/2
 
     @bottom.setter
     def bottom(self, value):
-        if self.rotation <= 90:
-            self.y = value
-        else:
-            self.y = value + self.image.height
+        self.y = value + self.image.height/2
 
     @property
     def vcenter(self):
-        return (self.top+self.bottom) / 2
+        return self.y
 
     @vcenter.setter
     def vcenter(self, value):
-        self.bottom = value - self.image.height/2
+        self.y = value
 
     def __update(self, dt):
         if self.stage.paused:
