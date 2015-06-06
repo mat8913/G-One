@@ -22,7 +22,22 @@ from g.one.bullet import Bullet
 
 
 class Enemy(GameSprite):
+    """This is the abstract enemy class.
+
+    It provides basic functionality of enemies such as health and movement
+    according the current velocity.
+
+    Subclass this to provide different types of enemies.
+    """
     def __init__(self, stage, earth, pos, vel, health):
+        """Keyword arguments:
+
+        stage  -- the stage this enemy belongs to
+        earth  -- True if the enemy is earthling, False otherwise
+        pos    -- tuple of the enemy's initial position
+        vel    -- tuple of the enemy's initial velocity
+        health -- the enemy's initial health
+        """
         GameSprite.__init__(self, stage, Resources.ship_image)
         self.rotation = 180
         self.hcenter, self.vcenter = pos
@@ -31,6 +46,13 @@ class Enemy(GameSprite):
         self.health = health
 
     def update(self, dt):
+        """Update method called every (1/60) seconds. Makes the enemy move
+        according to velocity, bounce if it touches the edge of the screen and
+        cause mutual damage if it touches a player.
+
+        Override this method when subclassing but call it at the END of the
+        overriding method.
+        """
         self.x += self.vel[0] * dt
         self.y += self.vel[1] * dt
         self.bounce()
@@ -40,11 +62,21 @@ class Enemy(GameSprite):
             collision.hit()
 
     def hit(self):
+        """Called when the enemy is hit by a bullet or player.
+
+        Causes the enemy to lose health and get deleted when health reaches
+        zero.
+        """
         self.health -= 1
         if self.health <= 0:
             self.delete()
 
     def delete(self):
+        """Called when the enemy is to be deleted.
+
+        Informs the stage that the enemy is to be deleted from the enemy list
+        and then runs GameSprite's delete method.
+        """
         self.stage.delete_enemy(self)
         GameSprite.delete(self)
 
