@@ -19,18 +19,18 @@ from pyglet.image.codecs.png import PNGImageDecoder
 
 
 class Resources():
-    @staticmethod
-    def init():
+    @classmethod
+    def init(cls):
         pyglet.resource.path = ['@g.one.resources']
         pyglet.resource.reindex()
-        Resources.ship_image = Resources.load_image("ship.png")
-        Resources.earth_bullet_image = Resources.load_image("earth_bullet.png")
-        Resources.alien_bullet_image = Resources.load_image("alien_bullet.png")
-        Resources.earth_player_image = Resources.load_image("earth_player.png")
-        Resources.alien_player_image = Resources.load_image("alien_player.png")
+        cls.ship_image = Resources.load_image("ship.png")
+        cls.earth_bullet_image = Resources.load_image("earth_bullet.png")
+        cls.alien_bullet_image = Resources.load_image("alien_bullet.png")
+        cls.earth_player_image = Resources.load_image("earth_player.png")
+        cls.alien_player_image = Resources.load_image("alien_player.png")
 
-    @staticmethod
-    def load_image(filename):
+    @classmethod
+    def load_image(cls, filename):
         with pyglet.resource.file(filename) as f:
             decoder = PNGImageDecoder()
             return pyglet.image.load(filename, file=f, decoder=decoder)
