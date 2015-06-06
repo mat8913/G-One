@@ -28,7 +28,8 @@ class EnemySpawner():
         pyglet.clock.schedule_interval(self.update, 1/60)
 
     def update(self, dt):
-        self.cooldown -= dt
+        if not self.game.paused:
+            self.cooldown -= dt
 
     def spawn(self, amount):
         pass
