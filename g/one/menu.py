@@ -21,7 +21,27 @@ from g.one.menu_item import *
 
 
 class Menu():
+    """This is the abstract menu class.
+
+    It provides the basics of a menu.  The items in a Menu can be selected
+    vertically, using the up and down arrow keys.  If horizontal selection is
+    required, a HorizontalSelection can be used.
+
+    Subclass this to create other menus.
+    """
     def __init__(self, window=None):
+        """Initialise the Menu.
+
+        If window is provided, self.on_key_release will be set up as an event
+        handler.  Otherwise, call the method manually when needed.
+
+        Override this method when subclassing but call it at the BEGINNING of
+        the overriding method.  AFTER appending menu items to self.options, the
+        overriding method should initialise self.selected.
+
+        self.batch is set up as a drawing batch which all menu items should be
+        added to.
+        """
         if window is not None:
             window.push_handlers(self)
         self.window = window
@@ -30,6 +50,12 @@ class Menu():
         self.options = []
 
     def on_key_release(self, symbol, modifiers):
+        """Called when a key is released.
+
+        If the up or down arrow keys were released, select the next or previous
+        item of the menu respectively.  Otherwise, the keyrelease is send to
+        the currently selected menu item.
+        """
         if symbol == key.UP:
             self.selected = max(self.selected-1, 0)
         elif symbol == key.DOWN:
@@ -38,7 +64,14 @@ class Menu():
             self.options[self.selected].on_key_release(symbol, modifiers)
 
     def draw(self):
+        """Draws the menu."""
         self.batch.draw()
+
+    def delete(self):
+        """Call this when the menu is to be deleted."""
+        if self.window is not None:
+            self.window.remove_handlers(self)
+        self.options = None  # Break the circular references.
 
     @property
     def selected(self):
@@ -46,15 +79,14 @@ class Menu():
 
     @selected.setter
     def selected(self, value):
+        """Informs menu items when they are (de)selected."""
         self.options[self._selected].set_selected(False)
         self._selected = value
         self.options[self._selected].set_selected(True)
 
-    def delete(self):
-        if self.window is not None:
-            self.window.remove_handlers(self)
-        self.options = None
 
+# The menus below follow the patterns described in the docstrings above and
+# should be self-explanatory.
 
 class MainMenu(Menu):
     def __init__(self, window):
