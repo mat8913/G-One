@@ -29,8 +29,8 @@ class Resources():
         cls.earth_player_image = Resources.load_image("earth_player.png")
         cls.alien_player_image = Resources.load_image("alien_player.png")
 
-    @classmethod
-    def load_image(cls, filename):
+    @staticmethod
+    def load_image(filename):
         with pyglet.resource.file(filename) as f:
             decoder = PNGImageDecoder()
             return pyglet.image.load(filename, file=f, decoder=decoder)
