@@ -26,6 +26,8 @@ class Resources():
         Resources.ship_image = Resources.load_image("ship.png")
         Resources.earth_bullet_image = Resources.load_image("earth_bullet.png")
         Resources.alien_bullet_image = Resources.load_image("alien_bullet.png")
+        Resources.earth_player_image = Resources.load_image("earth_player.png")
+        Resources.alien_player_image = Resources.load_image("alien_player.png")
 
     @staticmethod
     def load_image(filename):

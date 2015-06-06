@@ -24,7 +24,11 @@ from g.one.bullet import Bullet
 
 class Player(GameSprite):
     def __init__(self, stage, earth, player_number):
-        GameSprite.__init__(self, stage, Resources.ship_image)
+        if earth:
+            image = Resources.earth_player_image
+        else:
+            image = Resources.alien_player_image
+        GameSprite.__init__(self, stage, image)
         self.keystate = [False] * 5
         self.cooldown = 0
         self.earth = earth
