@@ -18,7 +18,15 @@ import pyglet
 
 
 class Healthbar():
+    """The Healthbar class keeps track of a sprite's health and displays that
+    information to the screen visually in the form of a bar.
+    """
     def __init__(self, sprite, x=0, y=0):
+        """Keyword arguments:
+
+        sprite -- the sprite whose health will be displayed by this healthbar
+        x, y   -- the coordinates to the bottom right of this healthbar
+        """
         self.vlist = pyglet.graphics.vertex_list(
                 4,
                 ('v2i', (x, 0, x, y, x+10, 0, x+10, y)),
@@ -29,12 +37,16 @@ class Healthbar():
         self.sprite = sprite
 
     def draw(self):
+        """Draws the healthbar to screen."""
         self.set_health(self.sprite.health)
+        # It's faster to draw two triangles than one rectangle.
         self.vlist.draw(pyglet.gl.GL_TRIANGLE_STRIP)
 
     def set_health(self, health):
+        """Updates the size of the healthbar to match the provided health."""
         self.vlist.vertices[1] = self.y+health
         self.vlist.vertices[5] = self.y+health
 
     def __del__(self):
+        # Free the vertex list from memory when this healthbar is deleted.
         self.vlist.delete()
