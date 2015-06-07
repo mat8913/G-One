@@ -14,6 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from sys import exit as quit
+
 import pyglet
 from pyglet.window import key
 
