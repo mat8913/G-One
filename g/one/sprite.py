@@ -15,6 +15,7 @@
 #
 
 import math
+
 import pyglet
 
 from g.one.resources import Resources
