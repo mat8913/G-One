@@ -11,6 +11,6 @@ setup(
         ]
     },
     package_data={
-        'g.one.resources': ['*.png']
+        'g.one.resources': ['*.png', '*.wav']
     }
 )
