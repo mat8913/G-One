@@ -27,6 +27,8 @@ class BackgroundMusic():
 
     @classmethod
     def play(cls, music):
+        if cls.music == music:
+            return
         cls.music = music
         cls.next_music = None
         while cls.player.source is not None:

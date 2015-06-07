@@ -18,6 +18,8 @@ import pyglet
 from pyglet.window import key
 
 from g.one.menu_item import *
+from g.one.resources import Resources
+from g.one.background_music import BackgroundMusic
 
 
 class Menu():
@@ -108,6 +110,7 @@ class MainMenu(Menu):
           MenuAction(self, "Exit", quit, 427, 40)
         ]
         self.selected = 0
+        BackgroundMusic.play(Resources.menu_music)
 
     def new_game_pressed(self):
         self.window.change_stage(NewGameMenu(self.window))
