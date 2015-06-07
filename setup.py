@@ -12,5 +12,8 @@ setup(
     },
     package_data={
         'g.one.resources': ['*.png', '*.wav']
-    }
+    },
+    install_requires=[
+        'pyglet'
+    ]
 )
