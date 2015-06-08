@@ -29,7 +29,7 @@ class Enemy(GameSprite):
 
     Subclass this to provide different types of enemies.
     """
-    def __init__(self, stage, pos, vel, health):
+    def __init__(self, stage, pos=(0, 0), vel=(0, 0), health=0):
         """Keyword arguments:
 
         stage  -- the stage this enemy belongs to
@@ -81,7 +81,7 @@ class Enemy(GameSprite):
 
 
 class BasicEnemy(Enemy):
-    def __init__(self, stage, pos, vel):
+    def __init__(self, stage, pos=(0, 0), vel=(0, 0)):
         Enemy.__init__(self, stage, pos, vel, 5)
         self.cooldown = 0
 
@@ -95,7 +95,7 @@ class BasicEnemy(Enemy):
 
 
 class HorizontalTrackerEnemy(Enemy):
-    def __init__(self, stage, ypos, yvel, player=None):
+    def __init__(self, stage, ypos=0, yvel=0, player=None):
         if player is None:
             player = stage.get_target()
         Enemy.__init__(self, stage, (player.hcenter, ypos), (0, yvel),
