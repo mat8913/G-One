@@ -29,7 +29,9 @@ class Bullet(GameSprite):
         GameSprite.__init__(self, stage, bullet_image)
         self.hcenter, self.vcenter = pos
         self.vel = vel
+        self.earth = earth
         self.belong_to_player = earth == stage.earth
+        stage.push_handlers(self.serialize_bullets)
 
     def update(self, dt):
         if self.stage.deleted:
@@ -48,6 +50,24 @@ class Bullet(GameSprite):
 
         if not self.onscreen():
             self.delete()
+
+    def serialize_bullets(self, bullets):
+        bullets.append(self.to_dict())
+
+    def to_dict(self):
+        return {
+                'type': type(self),
+                'earth': self.earth,
+                'pos': (self.x, self.y),
+                'vel': self.vel
+               }
+
+    @staticmethod
+    def from_dict(bullet_dict, stage):
+        earth = bullet_dict['earth']
+        pos = bullet_dict['pos']
+        vel = bullet_dict['vel']
+        return bullet_dict['type'](stage, earth, pos, vel)
 
     @property
     def vel(self):
