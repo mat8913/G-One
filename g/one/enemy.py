@@ -70,6 +70,26 @@ class Enemy(GameSprite):
         if self.health <= 0:
             self.delete()
 
+    def to_dict(self):
+        """Saves the current state of the enemy into a dict.  This dict can be
+        loaded using the from_dict method.
+        """
+        return {
+                'type': type(self),
+                'health': self.health,
+                'pos': (self.x, self.y),
+                'vel': self.vel
+               }
+
+    @staticmethod
+    def from_dict(enemy_dict, stage):
+        """Loads an enemy from a dict."""
+        enemy = enemy_dict['type'](stage)
+        enemy.health = enemy_dict['health']
+        enemy.vel = enemy_dict['vel']
+        enemy.x, enemy.y = enemy_dict['pos']
+        return enemy
+
     def delete(self):
         """Called when the enemy is to be deleted.
 
