@@ -29,11 +29,10 @@ class Enemy(GameSprite):
 
     Subclass this to provide different types of enemies.
     """
-    def __init__(self, stage, earth, pos, vel, health):
+    def __init__(self, stage, pos, vel, health):
         """Keyword arguments:
 
         stage  -- the stage this enemy belongs to
-        earth  -- True if the enemy is earthling, False otherwise
         pos    -- tuple of the enemy's initial position
         vel    -- tuple of the enemy's initial velocity
         health -- the enemy's initial health
@@ -42,7 +41,7 @@ class Enemy(GameSprite):
         self.rotation = 180
         self.hcenter, self.vcenter = pos
         self.vel = vel
-        self.earth = earth
+        self.earth = not stage.earth
         self.health = health
 
     def update(self, dt):
@@ -82,8 +81,8 @@ class Enemy(GameSprite):
 
 
 class BasicEnemy(Enemy):
-    def __init__(self, stage, earth, pos, vel):
-        Enemy.__init__(self, stage, earth, pos, vel, 5)
+    def __init__(self, stage, pos, vel):
+        Enemy.__init__(self, stage, pos, vel, 5)
         self.cooldown = 0
 
     def update(self, dt):
@@ -96,10 +95,10 @@ class BasicEnemy(Enemy):
 
 
 class HorizontalTrackerEnemy(Enemy):
-    def __init__(self, stage, earth, ypos, yvel, player=None):
+    def __init__(self, stage, ypos, yvel, player=None):
         if player is None:
             player = stage.get_target()
-        Enemy.__init__(self, stage, earth, (player.hcenter, ypos), (0, yvel),
+        Enemy.__init__(self, stage, (player.hcenter, ypos), (0, yvel),
                        10)
         self.player = player
 

@@ -42,7 +42,7 @@ class Game(pyglet.event.EventDispatcher):
             self.players.append(Player(self, self.earth, i))
         for i, e in enumerate(self.players):
             self.healthbars.append(Healthbar(e, 10 * i))
-        self.spawner = Level1Spawner(self, not self.earth)
+        self.spawner = Level1Spawner(self)
 
     def draw(self):
         if self.paused:

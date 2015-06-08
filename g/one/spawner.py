@@ -20,11 +20,10 @@ from g.one.enemy import BasicEnemy, HorizontalTrackerEnemy
 
 
 class EnemySpawner():
-    def __init__(self, game, earth):
+    def __init__(self, game):
         self.game = game
         self.cooldown = 0
         self.count = 0
-        self.earth = earth
         pyglet.clock.schedule_interval(self.update, 1/60)
 
     def update(self, dt):
@@ -40,11 +39,11 @@ class Level1Spawner(EnemySpawner):
         if self.cooldown <= 0 and amount < 6:
             self.cooldown = 1
             self.count += 1
-            rightmoving = [self.game, self.earth, (0, 400), (100, 0)]
-            leftmoving = [self.game, self.earth, (854, 400), (-100, 0)]
-            rightbouncing = [self.game, self.earth, (0, 400), (70, -70)]
-            leftbouncing = [self.game, self.earth, (854, 400), (-70, -70)]
-            tracking = [self.game, self.earth, 400, -70]
+            rightmoving = [self.game, (0, 400), (100, 0)]
+            leftmoving = [self.game, (854, 400), (-100, 0)]
+            rightbouncing = [self.game, (0, 400), (70, -70)]
+            leftbouncing = [self.game, (854, 400), (-70, -70)]
+            tracking = [self.game, 400, -70]
             if self.count < 10:
                 return [
                          BasicEnemy(*rightmoving)
