@@ -33,6 +33,20 @@ class EnemySpawner():
     def spawn(self, amount):
         pass
 
+    def to_dict(self):
+        return {
+                'type': type(self),
+                'cooldown': self.cooldown,
+                'count': self.count
+               }
+
+    @staticmethod
+    def from_dict(spawner_dict, stage):
+        spawner = spawner_dict['type'](stage)
+        spawner.cooldown = spawner_dict['cooldown']
+        spawner.count = spawner_dict['count']
+        return spawner
+
 
 class Level1Spawner(EnemySpawner):
     def spawn(self, amount):
