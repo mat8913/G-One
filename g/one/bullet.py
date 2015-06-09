@@ -27,7 +27,7 @@ class Bullet(GameSprite):
         self.vel = vel
         self.earth = earth
         self.belong_to_player = earth == stage.earth
-        stage.push_handlers(self.serialize_bullets)
+        stage.push_handlers(self.get_bullets)
 
     @staticmethod
     def bullet_image(earth):
@@ -54,7 +54,7 @@ class Bullet(GameSprite):
         if not self.onscreen():
             self.delete()
 
-    def serialize_bullets(self, bullets):
+    def get_bullets(self, bullets):
         bullets.append(self)
 
     def __getstate__(self):

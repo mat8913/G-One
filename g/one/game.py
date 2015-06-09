@@ -29,7 +29,7 @@ from g.one.spawner import Level1Spawner
 class Game(pyglet.event.EventDispatcher):
     def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
-        self.register_event_type('serialize_bullets')
+        self.register_event_type('get_bullets')
         self.window = window
         self.earth = earth
         self.batch = pyglet.graphics.Batch()
