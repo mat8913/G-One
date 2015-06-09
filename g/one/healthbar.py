@@ -47,6 +47,14 @@ class Healthbar():
         self.vlist.vertices[1] = self.y+health
         self.vlist.vertices[5] = self.y+health
 
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['vlist']
+        return state
+
+    def __setstate__(self, state):
+        self.__init__(**state)
+
     def __del__(self):
         # Free the vertex list from memory when this healthbar is deleted.
         self.vlist.delete()
