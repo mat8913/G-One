@@ -23,12 +23,14 @@ class Resources():
     def init(cls):
         pyglet.resource.path = ['@g.one.resources']
         pyglet.resource.reindex()
+
         cls.ship_image = cls.load_image("ship.png")
         cls.earth_bullet_image = cls.load_image("earth_bullet.png")
         cls.alien_bullet_image = cls.load_image("alien_bullet.png")
         cls.earth_player_image = cls.load_image("earth_player.png")
         cls.alien_player_image = cls.load_image("alien_player.png")
-        cls.menu_music = MediaLoader("menu.wav")
+
+        cls.menu_music = cls.load_sound("menu.wav")
 
     @staticmethod
     def load_image(filename):
@@ -36,10 +38,6 @@ class Resources():
             decoder = PNGImageDecoder()
             return pyglet.image.load(filename, file=f, decoder=decoder)
 
-
-class MediaLoader():
-    def __init__(self, filename):
-        self.filename = filename
-
-    def __call__(self):
-        return pyglet.resource.media(self.filename)
+    @staticmethod
+    def load_sound(filename):
+        return pyglet.resource.media(filename, streaming=False)

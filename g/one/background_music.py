@@ -23,24 +23,21 @@ class BackgroundMusic():
         cls.player = pyglet.media.Player()
         cls.player.push_handlers(cls.on_player_eos)
         cls.music = None
-        cls.next_music = None
 
     @classmethod
     def play(cls, music):
         if cls.music == music:
             return
-        cls.music = music
-        cls.next_music = None
+        cls.music = None
         while cls.player.source is not None:
             cls.player.next_source()
-        cls.player.queue(music())
+        cls.music = music
+        cls.player.queue(music)
         cls.player.play()
-        cls.next_music = music()
 
     @classmethod
     def on_player_eos(cls):
-        if cls.next_music is None:
+        if cls.music is None:
             return
-        cls.player.queue(cls.next_music)
+        cls.player.queue(cls.music)
         cls.player.play()
-        cls.next_music = cls.music()
