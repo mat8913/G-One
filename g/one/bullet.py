@@ -22,16 +22,19 @@ from g.one.sprite import GameSprite
 
 class Bullet(GameSprite):
     def __init__(self, stage, earth, pos, vel):
-        if earth:
-            bullet_image = Resources.earth_bullet_image
-        else:
-            bullet_image = Resources.alien_bullet_image
-        GameSprite.__init__(self, stage, bullet_image)
+        GameSprite.__init__(self, stage, self.bullet_image(earth))
         self.hcenter, self.vcenter = pos
         self.vel = vel
         self.earth = earth
         self.belong_to_player = earth == stage.earth
         stage.push_handlers(self.serialize_bullets)
+
+    @staticmethod
+    def bullet_image(earth):
+        if earth:
+            return Resources.earth_bullet_image
+        else:
+            return Resources.alien_bullet_image
 
     def update(self, dt):
         if self.stage.deleted:
@@ -52,22 +55,21 @@ class Bullet(GameSprite):
             self.delete()
 
     def serialize_bullets(self, bullets):
-        bullets.append(self.to_dict())
+        bullets.append(self)
 
-    def to_dict(self):
-        return {
-                'type': type(self),
-                'earth': self.earth,
-                'pos': (self.x, self.y),
-                'vel': self.vel
-               }
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_texture']
+        del state['_vertex_list']
+        del state['_group']
+        return state
 
-    @staticmethod
-    def from_dict(bullet_dict, stage):
-        earth = bullet_dict['earth']
-        pos = bullet_dict['pos']
-        vel = bullet_dict['vel']
-        return bullet_dict['type'](stage, earth, pos, vel)
+    def __setstate__(self, state):
+        self.stage = state['stage']
+        self._batch = state['_batch']
+        bullet_image = self.bullet_image(state['earth'])
+        GameSprite.__init__(self, self.stage, bullet_image, self._batch)
+        self.__dict__.update(state)
 
     @property
     def vel(self):

@@ -29,7 +29,7 @@ class GameSprite(pyglet.sprite.Sprite):
 
     Subclass this for any sprites which will be used during a game.
     """
-    def __init__(self, stage, img):
+    def __init__(self, stage, img, batch=None):
         """Initialises the sprite and sets up the update method to be called
         every (1/60) seconds.  Causes the image to be anchored to its center.
 
@@ -40,7 +40,9 @@ class GameSprite(pyglet.sprite.Sprite):
         """
         img.anchor_x = img.width // 2
         img.anchor_y = img.height // 2
-        pyglet.sprite.Sprite.__init__(self, img=img, batch=stage.batch)
+        if batch is None:
+            batch = stage.batch
+        pyglet.sprite.Sprite.__init__(self, img=img, batch=batch)
         pyglet.clock.schedule_interval(self.__update, 1/60)
         self.stage = stage
 
