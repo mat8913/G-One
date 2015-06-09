@@ -24,15 +24,18 @@ from g.one.bullet import Bullet
 
 class Player(GameSprite):
     def __init__(self, stage, earth, player_number):
-        if earth:
-            image = Resources.earth_player_image
-        else:
-            image = Resources.alien_player_image
-        GameSprite.__init__(self, stage, image)
+        GameSprite.__init__(self, stage, self.player_image(earth))
         self.keystate = [False] * 5
         self.cooldown = 0
         self.earth = earth
         self.health = 100
+
+    @staticmethod
+    def player_image(earth):
+        if earth:
+            return Resources.earth_player_image
+        else:
+            return Resources.alien_player_image
 
     def update(self, dt):
         self.x += (self.keystate[3] - self.keystate[2]) * 200 * dt
@@ -58,3 +61,17 @@ class Player(GameSprite):
 
     def hit(self):
         self.health -= 1
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_texture']
+        del state['_vertex_list']
+        del state['_group']
+        return state
+
+    def __setstate__(self, state):
+        self.stage = state['stage']
+        self._batch = state['_batch']
+        image = self.player_image(state['earth'])
+        GameSprite.__init__(self, self.stage, image, self._batch)
+        self.__dict__.update(state)
