@@ -67,10 +67,12 @@ class Player(GameSprite):
         del state['_texture']
         del state['_vertex_list']
         del state['_group']
+        del state['keystate']
         return state
 
     def __setstate__(self, state):
         self.stage = state['stage']
+        self.keystate = [False] * 5
         self._batch = state['_batch']
         image = self.player_image(state['earth'])
         GameSprite.__init__(self, self.stage, image, self._batch)
