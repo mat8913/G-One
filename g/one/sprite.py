@@ -29,22 +29,25 @@ class GameSprite(pyglet.sprite.Sprite):
 
     Subclass this for any sprites which will be used during a game.
     """
-    def __init__(self, stage, img, batch=None):
+    def __init__(self, stage, earth, batch=None):
         """Initialises the sprite and sets up the update method to be called
         every (1/60) seconds.  Causes the image to be anchored to its center.
 
 
         Keyword arguments:
         stage -- the stage this sprite belongs to
-        img   -- the image to be drawn for this sprite
+        earth -- True if the sprite is earthling, otherwise False
+        batch -- the drawing batch this sprite belongs to, default=stage.batch
         """
-        img.anchor_x = img.width // 2
-        img.anchor_y = img.height // 2
+        self.stage = stage
+        self.earth = earth
         if batch is None:
             batch = stage.batch
+        img = self.get_image()
+        img.anchor_x = img.width // 2
+        img.anchor_y = img.height // 2
         pyglet.sprite.Sprite.__init__(self, img=img, batch=batch)
         pyglet.clock.schedule_interval(self.__update, 1/60)
-        self.stage = stage
 
     def delete(self):
         """Called when the sprite is to be deleted.
@@ -67,6 +70,12 @@ class GameSprite(pyglet.sprite.Sprite):
     def update(self, dt):
         """Called every (1/60) seconds if the game is not paused.  Override
         this method when subclassing.
+        """
+        pass
+
+    def get_image(self):
+        """Returns the image to be used for this sprite.  Override this method
+        when subclassing
         """
         pass
 
@@ -202,3 +211,15 @@ class GameSprite(pyglet.sprite.Sprite):
     @vcenter.setter
     def vcenter(self, value):
         self.y = value
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_texture']
+        del state['_vertex_list']
+        del state['_group']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        GameSprite.__init__(self, self.stage, self.earth, self._batch)
+        self.__dict__.update(state)

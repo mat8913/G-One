@@ -37,15 +37,13 @@ class Enemy(GameSprite):
         vel    -- tuple of the enemy's initial velocity
         health -- the enemy's initial health
         """
-        GameSprite.__init__(self, stage, Resources.ship_image)
+        GameSprite.__init__(self, stage, not stage.earth)
         self.rotation = 180
         self.hcenter, self.vcenter = pos
         self.vel = vel
-        self.earth = not stage.earth
         self.health = health
 
-    @staticmethod
-    def enemy_image():
+    def get_image(self):
         return Resources.ship_image
 
     def update(self, dt):
@@ -73,20 +71,6 @@ class Enemy(GameSprite):
         self.health -= 1
         if self.health <= 0:
             self.delete()
-
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_texture']
-        del state['_vertex_list']
-        del state['_group']
-        return state
-
-    def __setstate__(self, state):
-        self.stage = state['stage']
-        self._batch = state['_batch']
-        image = self.enemy_image()
-        GameSprite.__init__(self, self.stage, image, self._batch)
-        self.__dict__.update(state)
 
     def delete(self):
         """Called when the enemy is to be deleted.

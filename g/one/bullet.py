@@ -22,16 +22,14 @@ from g.one.sprite import GameSprite
 
 class Bullet(GameSprite):
     def __init__(self, stage, earth, pos, vel):
-        GameSprite.__init__(self, stage, self.bullet_image(earth))
+        GameSprite.__init__(self, stage, earth)
         self.hcenter, self.vcenter = pos
         self.vel = vel
-        self.earth = earth
         self.belong_to_player = earth == stage.earth
         stage.push_handlers(self.get_bullets)
 
-    @staticmethod
-    def bullet_image(earth):
-        if earth:
+    def get_image(self):
+        if self.earth:
             return Resources.earth_bullet_image
         else:
             return Resources.alien_bullet_image
@@ -56,20 +54,6 @@ class Bullet(GameSprite):
 
     def get_bullets(self, bullets):
         bullets.append(self)
-
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_texture']
-        del state['_vertex_list']
-        del state['_group']
-        return state
-
-    def __setstate__(self, state):
-        self.stage = state['stage']
-        self._batch = state['_batch']
-        bullet_image = self.bullet_image(state['earth'])
-        GameSprite.__init__(self, self.stage, bullet_image, self._batch)
-        self.__dict__.update(state)
 
     @property
     def vel(self):
