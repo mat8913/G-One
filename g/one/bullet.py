@@ -55,6 +55,10 @@ class Bullet(GameSprite):
     def get_bullets(self, bullets):
         bullets.append(self)
 
+    def delete(self):
+        self.stage.remove_handlers(self.get_bullets)
+        GameSprite.delete(self)
+
     @property
     def vel(self):
         return self._vel
