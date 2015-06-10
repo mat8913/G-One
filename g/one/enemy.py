@@ -44,6 +44,10 @@ class Enemy(GameSprite):
         self.earth = not stage.earth
         self.health = health
 
+    @staticmethod
+    def enemy_image():
+        return Resources.ship_image
+
     def update(self, dt):
         """Update method called every (1/60) seconds.  Makes the enemy move
         according to velocity, bounce if it touches the edge of the screen and
@@ -70,25 +74,19 @@ class Enemy(GameSprite):
         if self.health <= 0:
             self.delete()
 
-    def to_dict(self):
-        """Saves the current state of the enemy into a dict.  This dict can be
-        loaded using the from_dict method.
-        """
-        return {
-                'type': type(self),
-                'health': self.health,
-                'pos': (self.x, self.y),
-                'vel': self.vel
-               }
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_texture']
+        del state['_vertex_list']
+        del state['_group']
+        return state
 
-    @staticmethod
-    def from_dict(enemy_dict, stage):
-        """Loads an enemy from a dict."""
-        enemy = enemy_dict['type'](stage)
-        enemy.health = enemy_dict['health']
-        enemy.vel = enemy_dict['vel']
-        enemy.x, enemy.y = enemy_dict['pos']
-        return enemy
+    def __setstate__(self, state):
+        self.stage = state['stage']
+        self._batch = state['_batch']
+        image = self.enemy_image()
+        GameSprite.__init__(self, self.stage, image, self._batch)
+        self.__dict__.update(state)
 
     def delete(self):
         """Called when the enemy is to be deleted.
