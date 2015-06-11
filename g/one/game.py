@@ -32,6 +32,7 @@ class Game(pyglet.event.EventDispatcher):
         self.register_event_type('get_bullets')
         self.window = window
         self.earth = earth
+        self.difficulty = difficulty
         self.batch = pyglet.graphics.Batch()
         self.pause_menu = None
         self.players = []
