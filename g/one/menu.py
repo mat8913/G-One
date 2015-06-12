@@ -19,6 +19,7 @@ from sys import exit as quit
 import pyglet
 from pyglet.window import key
 
+from g.one import savestate
 from g.one.menu_item import *
 from g.one.resources import Resources
 from g.one.background_music import BackgroundMusic
@@ -106,7 +107,7 @@ class MainMenu(Menu):
         )
         self.options = [
           MenuAction(self, "New Game", self.new_game_pressed, 427, 160),
-          MenuItem(self, "Load Game", 427, 130),
+          MenuAction(self, "Load Game", self.load_game_pressed, 427, 130),
           MenuItem(self, "Highscore List", 427, 100),
           MenuItem(self, "Options", 427, 70),
           MenuAction(self, "Exit", quit, 427, 40)
@@ -116,6 +117,9 @@ class MainMenu(Menu):
 
     def new_game_pressed(self):
         self.window.change_stage(NewGameMenu(self.window))
+
+    def load_game_pressed(self):
+        self.window.change_stage(LoadGameMenu(self.window))
 
 
 class NewGameMenu(Menu):
@@ -151,3 +155,42 @@ class NewGameMenu(Menu):
         players = self.options[2].selected + 1
         game = Game(self.window, earth, difficulty, players)
         self.window.change_stage(game)
+
+
+class LoadGameMenu(Menu):
+    def __init__(self, window):
+        Menu.__init__(self, window)
+        self.title = pyglet.text.Label(
+          'Load Game',
+          font_name='Times New Roman',
+          font_size=25,
+          x=427, y=400,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.options = []
+        self.options += [self.savestate_option(i) for i in range(3)]
+        self.options += [MenuAction(self, "Back", self.back_pressed, 100, 40)]
+        self.selected = 0
+
+    def back_pressed(self):
+        self.window.change_stage(MainMenu(self.window))
+
+    def load_state_function(self, statenum):
+        def load_state():
+            game = savestate.load_state(statenum, self.window)
+            self.window.change_stage(game)
+        return load_state
+
+    def savestate_option(self, statenum):
+        y = 160 - 30*statenum
+        statenum_text = "State " + str(statenum+1) + ": "
+        info = savestate.get_state_info(statenum)
+        if info is None:
+            return MenuItem(self, statenum_text + "Empty", 427, y)
+        else:
+            return MenuAction(self,
+                              statenum_text + info,
+                              self.load_state_function(statenum),
+                              427, y)
