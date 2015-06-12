@@ -116,3 +116,21 @@ class Game(pyglet.event.EventDispatcher):
 
     def delete_enemy(self, enemy):
         self.enemies.remove(enemy)
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['pause_menu']
+        try:
+            del state['_event_stack']
+        except KeyError:
+            pass
+        state['bullets'] = []
+        self.dispatch_event('get_bullets', state['bullets'])
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        pyglet.event.EventDispatcher.__init__(self)
+        self.register_event_type('get_bullets')
+        self.window.push_handlers(self)
+        self.pause_menu = None
