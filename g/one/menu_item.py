@@ -19,7 +19,7 @@ from pyglet.window import key
 
 
 class MenuItem():
-    def __init__(self, menu, text, x=0, y=0):
+    def __init__(self, menu, text, x=0, y=0, center=True):
         self.menu = menu
         self.label = pyglet.text.Label(
           text,
@@ -29,6 +29,8 @@ class MenuItem():
           anchor_x='center', anchor_y='center',
           batch=menu.batch
         )
+        if center == False:
+            self.label.anchor_x = 'left'
 
     def on_key_release(self, symbol, modifiers):
         pass
@@ -84,8 +86,7 @@ class KeySelector(MenuItem):
 
 class OptionSelector(MenuItem):
     def __init__(self, menu, text, options, x, y):
-        MenuItem.__init__(self, menu, text, x, y)
-        self.label.anchor_x = 'left'
+        MenuItem.__init__(self, menu, text, x, y, center=False)
         self.option_label = pyglet.text.Label(
           "<< >>",
           font_name='Times New Roman',
