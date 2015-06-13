@@ -39,6 +39,14 @@ class MenuItem():
         else:
             self.label.color = (255, 255, 255, 255)
 
+    @property
+    def text(self):
+        return self.label.text
+
+    @text.setter
+    def text(self, value):
+        self.label.text = value
+
 
 class MenuAction(MenuItem):
     def __init__(self, menu, text, action, x=0, y=0):
