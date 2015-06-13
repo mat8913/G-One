@@ -35,7 +35,7 @@ class PauseMenu(Menu):
           anchor_x='center', anchor_y='center',
           batch=self.batch
         )
-        self.options = [
+        self.items = [
           MenuAction(self, "Resume", self.resume_pressed, 427, 160),
           MenuAction(self, "Save Game", self.save_game_pressed, 427, 130),
           MenuItem(self, "Highscore List", 427, 100),
@@ -75,9 +75,9 @@ class SaveGameMenu(Menu):
           anchor_x='center', anchor_y='center',
           batch=self.batch
         )
-        self.options = []
-        self.options += [self.savestate_option(i) for i in range(3)]
-        self.options += [MenuAction(self, "Back", self.back_pressed, 100, 40)]
+        self.items = []
+        self.items += [self.savestate_option(i) for i in range(3)]
+        self.items += [MenuAction(self, "Back", self.back_pressed, 100, 40)]
         self.selected = 0
 
     def back_pressed(self):
@@ -89,7 +89,7 @@ class SaveGameMenu(Menu):
             self.status.text = "Saved to state " + str(statenum+1)
             statenum_text = "State " + str(statenum+1) + ": "
             info = savestate.get_state_info(statenum)
-            self.options[statenum].text = statenum_text + info
+            self.items[statenum].text = statenum_text + info
         return save_state
 
     def savestate_option(self, statenum):

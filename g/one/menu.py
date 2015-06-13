@@ -41,7 +41,7 @@ class Menu():
         handler.  Otherwise, call the method manually when needed.
 
         Override this method when subclassing but call it at the BEGINNING of
-        the overriding method.  AFTER appending menu items to self.options, the
+        the overriding method.  AFTER appending menu items to self.items, the
         overriding method should initialise self.selected.
 
         self.batch is set up as a drawing batch which all menu items should be
@@ -52,7 +52,7 @@ class Menu():
         self.window = window
         self.batch = pyglet.graphics.Batch()
         self._selected = 0
-        self.options = []
+        self.items = []
 
     def on_key_release(self, symbol, modifiers):
         """Called when a key is released.
@@ -64,9 +64,9 @@ class Menu():
         if symbol == key.UP:
             self.selected = max(self.selected-1, 0)
         elif symbol == key.DOWN:
-            self.selected = min(self.selected+1, len(self.options)-1)
+            self.selected = min(self.selected+1, len(self.items)-1)
         else:
-            self.options[self.selected].on_key_release(symbol, modifiers)
+            self.items[self.selected].on_key_release(symbol, modifiers)
 
     def draw(self):
         """Draws the menu."""
@@ -76,7 +76,7 @@ class Menu():
         """Call this when the menu is to be deleted."""
         if self.window is not None:
             self.window.remove_handlers(self)
-        self.options = None  # Break the circular references.
+        self.items = None  # Break the circular references.
 
     @property
     def selected(self):
@@ -85,9 +85,9 @@ class Menu():
     @selected.setter
     def selected(self, value):
         """Informs menu items when they are (de)selected."""
-        self.options[self._selected].set_selected(False)
+        self.items[self._selected].set_selected(False)
         self._selected = value
-        self.options[self._selected].set_selected(True)
+        self.items[self._selected].set_selected(True)
 
 
 # The menus below follow the patterns described in the docstrings above and
@@ -105,7 +105,7 @@ class MainMenu(Menu):
           anchor_x='center', anchor_y='center',
           batch=self.batch
         )
-        self.options = [
+        self.items = [
           MenuAction(self, "New Game", self.new_game_pressed, 427, 160),
           MenuAction(self, "Load Game", self.load_game_pressed, 427, 130),
           MenuItem(self, "Highscore List", 427, 100),
@@ -134,7 +134,7 @@ class NewGameMenu(Menu):
           anchor_x='center', anchor_y='center',
           batch=self.batch
         )
-        self.options = [
+        self.items = [
           OptionSelector(self, "Play as", ["Earthlings", "Aliens"], 150, 160),
           OptionSelector(self, "Difficulty", ["Normal", "Hard"], 150, 130),
           OptionSelector(self, "Number of Players", ["One", "Two"], 150, 100),
@@ -150,9 +150,9 @@ class NewGameMenu(Menu):
 
     def start_pressed(self):
         from g.one.game import Game
-        earth = self.options[0].selected == 0
-        difficulty = self.options[1].selected
-        players = self.options[2].selected + 1
+        earth = self.items[0].selected == 0
+        difficulty = self.items[1].selected
+        players = self.items[2].selected + 1
         game = Game(self.window, earth, difficulty, players)
         self.window.change_stage(game)
 
@@ -169,9 +169,9 @@ class LoadGameMenu(Menu):
           anchor_x='center', anchor_y='center',
           batch=self.batch
         )
-        self.options = []
-        self.options += [self.savestate_option(i) for i in range(3)]
-        self.options += [MenuAction(self, "Back", self.back_pressed, 100, 40)]
+        self.items = []
+        self.items += [self.savestate_option(i) for i in range(3)]
+        self.items += [MenuAction(self, "Back", self.back_pressed, 100, 40)]
         self.selected = 0
 
     def back_pressed(self):
