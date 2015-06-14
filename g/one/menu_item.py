@@ -29,7 +29,7 @@ class MenuItem():
           anchor_x='center', anchor_y='center',
           batch=menu.batch
         )
-        if center == False:
+        if not center:
             self.label.anchor_x = 'left'
 
     def on_key_release(self, symbol, modifiers):
