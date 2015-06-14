@@ -48,6 +48,8 @@ class Options():
       'controls': default_controls
     }
 
+    listeners = []
+
     @staticmethod
     def load():
         Options.options = Options.options_from_file(Options.filename)
@@ -71,3 +73,8 @@ class Options():
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, 'wb') as f:
             pickle.dump(Options.options, f)
+
+    @staticmethod
+    def changed():
+        for listener in Options.listeners:
+            listener()
