@@ -144,6 +144,7 @@ class Game(pyglet.event.EventDispatcher):
     def __getstate__(self):
         state = self.__dict__.copy()
         del state['pause_menu']
+        del state['score_label']
         try:
             del state['_event_stack']
         except KeyError:
@@ -158,3 +159,12 @@ class Game(pyglet.event.EventDispatcher):
         self.register_event_type('get_bullets')
         self.window.push_handlers(self)
         self.pause_menu = None
+        self.score_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=0, y=480,
+          color=(255, 255, 255, 255),
+          anchor_x='left', anchor_y='top'
+        )
+        self.score = self._score
