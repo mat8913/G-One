@@ -23,6 +23,7 @@ from g.one import savestate
 from g.one.menu_item import *
 from g.one.resources import Resources
 from g.one.background_music import BackgroundMusic
+from g.one.options import Options
 
 
 class Menu():
@@ -111,7 +112,7 @@ class MainMenu(Menu):
           MenuAction(self, "New Game", self.new_game_pressed, 427, 160),
           MenuAction(self, "Load Game", self.load_game_pressed, 427, 130),
           MenuItem(self, "Highscore List", 427, 100),
-          MenuItem(self, "Options", 427, 70),
+          MenuAction(self, "Options", self.options_pressed, 427, 70),
           MenuAction(self, "Exit", quit, 427, 40)
         ]
         self.selected = 0
@@ -122,6 +123,9 @@ class MainMenu(Menu):
 
     def load_game_pressed(self):
         self.window.change_stage(LoadGameMenu(self.window))
+
+    def options_pressed(self):
+        self.window.change_stage(OptionsMenu(self.window))
 
 
 class NewGameMenu(Menu):
@@ -196,3 +200,49 @@ class LoadGameMenu(Menu):
                               statenum_text + info,
                               self.load_state_function(statenum),
                               427, y)
+
+
+class OptionsMenu(Menu):
+    def __init__(self, window):
+        Menu.__init__(self, window)
+        self.title = pyglet.text.Label(
+          'Options',
+          font_name='Times New Roman',
+          font_size=25,
+          x=427, y=400,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.items = [
+          OptionSelector(self, "Fullscreen:", ["Off", "On"], 150, 160),
+          Slider(self, "Music:", 150, 130),
+          Slider(self, "Sound effects:", 150, 100),
+          MenuItem(self, "Controls", 150, 70, center=False),
+          MenuAction(self, "Back", self.back_pressed, 100, 40)
+        ]
+        if Options.options['fullscreen']:
+            self.items[0].selected = 1
+        else:
+            self.items[0].selected = 0
+        self.items[1].value = Options.options['music']
+        self.items[2].value = Options.options['sound effects']
+        self.selected = 0
+
+    def on_key_release(self, symbol, modifiers):
+        Menu.on_key_release(self, symbol, modifiers)
+        if self.deleted:
+            return
+        Options.options['fullscreen'] = self.items[0].selected == 1
+        Options.changed()
+
+    def on_text_motion(self, motion):
+        if isinstance(self.items[self.selected], Slider):
+            self.items[self.selected].on_text_motion(motion)
+        Options.options['music'] = self.items[1].value
+        Options.options['sound effects'] = self.items[2].value
+        Options.changed()
+
+    def back_pressed(self):
+        Options.save()
+        self.window.change_stage(MainMenu(self.window))
