@@ -52,6 +52,7 @@ class Menu():
         self.window = window
         self.batch = pyglet.graphics.Batch()
         self._selected = 0
+        self.deleted = False
         self.items = []
 
     def on_key_release(self, symbol, modifiers):
@@ -77,6 +78,7 @@ class Menu():
         if self.window is not None:
             self.window.remove_handlers(self)
         self.items = None  # Break the circular references.
+        self.deleted = True
 
     @property
     def selected(self):
