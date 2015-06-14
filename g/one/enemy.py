@@ -70,6 +70,7 @@ class Enemy(GameSprite):
         zero.
         """
         self.health -= 1
+        self.stage.score += 1
         if self.health <= 0:
             SoundEffect(Resources.explosion_sound)
             self.delete()

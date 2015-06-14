@@ -30,21 +30,35 @@ class Game(pyglet.event.EventDispatcher):
     def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
         self.register_event_type('get_bullets')
+
         self.window = window
         self.earth = earth
         self.difficulty = difficulty
-        self.batch = pyglet.graphics.Batch()
-        self.pause_menu = None
-        self.players = []
-        self.enemies = []
-        self.healthbars = []
+
         self.deleted = False
+        self.pause_menu = None
+        self.batch = pyglet.graphics.Batch()
+        self.enemies = []
+        self.spawner = Level1Spawner(self)
         self.__target = -1
+
+        self.players = []
         for i in range(1, players+1):
             self.players.append(Player(self, self.earth, i))
+
+        self.healthbars = []
         for i, e in enumerate(self.players):
             self.healthbars.append(Healthbar(e, 15 * i))
-        self.spawner = Level1Spawner(self)
+
+        self.score_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=0, y=480,
+          color=(255, 255, 255, 255),
+          anchor_x='left', anchor_y='top'
+        )
+        self.score = 0
 
     def draw(self):
         if self.paused:
@@ -53,6 +67,7 @@ class Game(pyglet.event.EventDispatcher):
             self.batch.draw()
             for healthbar in self.healthbars:
                 healthbar.draw()
+            self.score_label.draw()
 
             spawn = self.spawner.spawn(len(self.enemies))
             if spawn is not None:
@@ -107,6 +122,15 @@ class Game(pyglet.event.EventDispatcher):
     @property
     def paused(self):
         return self.pause_menu is not None
+
+    @property
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self, value):
+        self._score = value
+        self.score_label.text = 'Score: ' + str(value)
 
     def get_target(self):
         self.__target = self.__target + 1
