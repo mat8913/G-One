@@ -31,6 +31,7 @@ class Resources():
         cls.alien_player_image = cls.load_image("alien_player.png")
 
         cls.menu_music = cls.load_sound("menu.wav")
+        cls.explosion_sound = cls.load_sound("explosion.wav")
 
     @staticmethod
     def load_image(filename):

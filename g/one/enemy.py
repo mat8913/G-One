@@ -19,6 +19,7 @@ import math
 from g.one.resources import Resources
 from g.one.sprite import GameSprite
 from g.one.bullet import Bullet
+from g.one.sound_effect import SoundEffect
 
 
 class Enemy(GameSprite):
@@ -70,6 +71,7 @@ class Enemy(GameSprite):
         """
         self.health -= 1
         if self.health <= 0:
+            SoundEffect(Resources.explosion_sound)
             self.delete()
 
     def delete(self):
