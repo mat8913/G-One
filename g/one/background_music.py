@@ -16,6 +16,8 @@
 
 import pyglet
 
+from g.one.options import Options
+
 
 class BackgroundMusic():
     @classmethod
@@ -23,6 +25,8 @@ class BackgroundMusic():
         cls.player = pyglet.media.Player()
         cls.player.push_handlers(cls.on_player_eos)
         cls.music = None
+        Options.listeners.append(cls.on_options_changed)
+        cls.on_options_changed()
 
     @classmethod
     def play(cls, music):
@@ -41,3 +45,7 @@ class BackgroundMusic():
             return
         cls.player.queue(cls.music)
         cls.player.play()
+
+    @classmethod
+    def on_options_changed(cls):
+        cls.player.volume = Options.options['music'] / 100

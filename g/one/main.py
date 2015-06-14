@@ -27,7 +27,7 @@ def main():
                                     for x in pyglet.options['audio']
                                     if x != 'pulse')
     Resources.init()
-    BackgroundMusic.init()
     Options.load()
+    BackgroundMusic.init()
     window = GameWindow()
     pyglet.app.run()

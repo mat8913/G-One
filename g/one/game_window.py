@@ -19,6 +19,7 @@ from pyglet.window import key
 
 from g.one.resources import Resources
 from g.one.menu import MainMenu
+from g.one.options import Options
 
 
 class GameWindow(pyglet.window.Window):
@@ -26,6 +27,8 @@ class GameWindow(pyglet.window.Window):
         pyglet.window.Window.__init__(self, width=854, height=480,
                                       caption="G - One", resizable=True)
         self.current_stage = MainMenu(self)
+        Options.listeners.append(self.on_options_changed)
+        self.on_options_changed()
 
     def on_draw(self):
         self.clear()
@@ -35,8 +38,10 @@ class GameWindow(pyglet.window.Window):
         pass
 
     def on_key_release(self, symbol, modifiers):
-        if symbol == key.F:
-            self.set_fullscreen(not self.fullscreen)
+        pass
+
+    def on_options_changed(self):
+        self.set_fullscreen(Options.options['fullscreen'])
 
     def change_stage(self, newstage):
         self.current_stage.delete()
