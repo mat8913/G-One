@@ -114,6 +114,58 @@ class OptionSelector(MenuItem):
         self.option_label.text = "<< " + self.options[value] + " >>"
 
 
+class Slider(MenuItem):
+    def __init__(self, menu, text, x, y):
+        MenuItem.__init__(self, menu, text, x, y, center=False)
+        self.width = 124
+
+        # Co-ordinates for the slider itself (not the text)
+        self.y = y
+        self.left = 730-x
+        self.right = self.left + self.width
+
+        self.background = self.menu.batch.add(
+                4, pyglet.gl.GL_TRIANGLE_STRIP, pyglet.graphics.Group(),
+                ('v2i', (self.left, y-2,
+                         self.left, y+2,
+                         self.right, y-2,
+                         self.right, y+2)),
+                ('c3B', (255, 255, 255,
+                         255, 255, 255,
+                         255, 255, 255,
+                         255, 255, 255))
+            )
+        self.slider = self.menu.batch.add(
+                3, pyglet.gl.GL_TRIANGLES, pyglet.graphics.Group(),
+                ('v2i', (0, y-10, 0, y-10, 0, y+10)),
+                ('c3B', (255, 255, 255, 255, 255, 255, 255, 255, 255,))
+            )
+        self.value = 100
+
+    def on_text_motion(self, motion):
+        if motion == key.MOTION_LEFT:
+            self.value = max(self.value-1, 0)
+        elif motion == key.MOTION_RIGHT:
+            self.value = min(self.value+1, 100)
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+        center = self.left + (self.width * value)//100
+        self.slider.vertices[0] = center - 5
+        self.slider.vertices[2] = center + 5
+        self.slider.vertices[4] = center
+
+    def __del__(self):
+        # Free vertex lists from memory.
+        self.background.delete()
+        self.slider.delete()
+
+
 class HorizontalSelection():
     def __init__(self, options):
         self.options = options
