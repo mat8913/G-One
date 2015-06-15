@@ -59,6 +59,11 @@ class Player(GameSprite):
 
     def hit(self):
         self.health -= 1
+        if self.health <= 0:
+            self.stage.lives -= 1
+            self.health = 100
+            self.x = 0
+            self.y = 0
 
     def __getstate__(self):
         state = GameSprite.__getstate__(self)

@@ -60,6 +60,16 @@ class Game(pyglet.event.EventDispatcher):
         )
         self.score = 0
 
+        self.lives_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=0, y=460,
+          color=(255, 255, 255, 255),
+          anchor_x='left', anchor_y='top'
+        )
+        self.lives = 3
+
     def draw(self):
         if self.paused:
             self.pause_menu.draw()
@@ -68,6 +78,7 @@ class Game(pyglet.event.EventDispatcher):
             for healthbar in self.healthbars:
                 healthbar.draw()
             self.score_label.draw()
+            self.lives_label.draw()
 
             spawn = self.spawner.spawn(len(self.enemies))
             if spawn is not None:
@@ -132,6 +143,15 @@ class Game(pyglet.event.EventDispatcher):
         self._score = value
         self.score_label.text = 'Score: ' + str(value)
 
+    @property
+    def lives(self):
+        return self._lives
+
+    @lives.setter
+    def lives(self, value):
+        self._lives = value
+        self.lives_label.text = 'Lives: ' + str(value)
+
     def get_target(self):
         self.__target = self.__target + 1
         if self.__target >= len(self.players):
@@ -145,6 +165,7 @@ class Game(pyglet.event.EventDispatcher):
         state = self.__dict__.copy()
         del state['pause_menu']
         del state['score_label']
+        del state['lives_label']
         try:
             del state['_event_stack']
         except KeyError:
@@ -168,3 +189,13 @@ class Game(pyglet.event.EventDispatcher):
           anchor_x='left', anchor_y='top'
         )
         self.score = self._score
+
+        self.lives_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=0, y=460,
+          color=(255, 255, 255, 255),
+          anchor_x='left', anchor_y='top'
+        )
+        self.lives = self._lives
