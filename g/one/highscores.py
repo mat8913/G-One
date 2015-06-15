@@ -22,22 +22,24 @@ from pyglet.resource import get_settings_path
 filename = get_settings_path("g-one") + "/highscores.p"
 
 
-def add_highscore(name, score):
+def add_highscore(earth, name, difficulty, score):
+    e = 0 if earth else 1
     highscores = load_highscores()
-    highscores.append((name, score))
-    highscores.sort(key=lambda x: x[1], reverse=True)
-    while len(highscores) > 10:
-        del highscores[-1]
+    highscores[e].append((name, difficulty, score))
+    highscores[e].sort(key=lambda x: x[2], reverse=True)
+    while len(highscores[e]) > 10:
+        del highscores[e][-1]
     save_highscores(highscores)
     return highscores
 
 
-def is_highscore(score):
+def is_highscore(earth, score):
+    e = 0 if earth else 1
     highscores = load_highscores()
-    if len(highscores) < 10:
+    if len(highscores[e]) < 10:
         return True
     else:
-        return score > highscores[-1][1]
+        return score > highscores[e][-1][2]
 
 
 def load_highscores():
@@ -45,7 +47,7 @@ def load_highscores():
         with open(filename, 'rb') as f:
             return pickle.load(f)
     except Exception:
-        return []
+        return [[], []]
 
 
 def save_highscores(highscores):
