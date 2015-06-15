@@ -106,7 +106,8 @@ class Game(pyglet.event.EventDispatcher):
                     return
 
     def change_pause(self, pause_menu):
-        self.pause_menu.delete()
+        if self.pause_menu is not None:
+            self.pause_menu.delete()
         self.pause_menu = pause_menu
 
     def exit(self):
@@ -151,6 +152,12 @@ class Game(pyglet.event.EventDispatcher):
     def lives(self, value):
         self._lives = value
         self.lives_label.text = 'Lives: ' + str(value)
+        if value <= 0:
+            from g.one.menu import GameOverMenu
+            self.window.change_stage(GameOverMenu(self.window,
+                                                  self.score,
+                                                  self.difficulty,
+                                                  self.earth))
 
     def get_target(self):
         self.__target = self.__target + 1

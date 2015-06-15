@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import string
 from sys import exit as quit
 
 import pyglet
@@ -246,3 +247,84 @@ class OptionsMenu(Menu):
     def back_pressed(self):
         Options.save()
         self.window.change_stage(MainMenu(self.window))
+
+
+class GameOverMenu(Menu):
+    def __init__(self, window, score, difficulty, earth):
+        Menu.__init__(self, window)
+        self.title = pyglet.text.Label(
+          'Game Over',
+          font_name='Times New Roman',
+          font_size=25,
+          x=427, y=400,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.score_label = pyglet.text.Label(
+          'Score: ' + str(score),
+          font_name='Times New Roman',
+          font_size=16,
+          x=427, y=350,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.difficulty_label = pyglet.text.Label(
+          'Difficulty: ' + ["Normal", "Hard"][difficulty],
+          font_name='Times New Roman',
+          font_size=16,
+          x=427, y=320,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.earh_label = pyglet.text.Label(
+          'Playing as: ' + "Earthlings" if earth else "Aliens",
+          font_name='Times New Roman',
+          font_size=16,
+          x=427, y=290,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.enter_name_label = pyglet.text.Label(
+          'Please enter your name and press enter to continue:',
+          font_name='Times New Roman',
+          font_size=16,
+          x=427, y=200,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.player_name_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=427, y=170,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.player_name = ""
+
+    def on_key_release(self, symbol, modifiers):
+        if symbol == key.ENTER:
+            print(self.player_name)
+
+    def on_text(self, text):
+        if text not in string.whitespace or text == ' ':
+            self.player_name += text
+
+    def on_text_motion(self, motion):
+        if motion == key.MOTION_BACKSPACE:
+            self.player_name = self.player_name[:-1]
+
+    @property
+    def player_name(self):
+        return self._player_name
+
+    @player_name.setter
+    def player_name(self, value):
+        self._player_name = value
+        self.player_name_label.text = value
