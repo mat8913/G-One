@@ -76,3 +76,33 @@ class Level1Spawner(EnemySpawner):
             return None
         else:
             return []
+
+class Level2Spawner(EnemySpawner):
+    def spawn(self, amount):
+        if self.cooldown <= 0:
+            self.cooldown = 1
+            self.count += 1
+            rightbouncing = [self.game, (0, 400), (70, -70)]
+            leftbouncing = [self.game, (854, 400), (-70, -70)]
+            tracking = [self.game, 400, -70]
+            if self.count < 2:
+                return [
+                         BasicEnemy(*rightbouncing),
+                         BasicEnemy(*leftbouncing),
+                         HorizontalTrackerEnemy(*tracking)
+                       ]
+            if self.count < 30:
+                return [
+                         BasicEnemy(self.game, (450, 400), self.random_vel())
+                       ]
+            return None
+        else:
+            return []
+
+    def random_vel(self):
+        from random import randint
+        from math import sin, cos, radians
+        angle = radians(randint(0, 180))
+        vel_x = 90 * cos(angle)
+        vel_y = -90 * sin(angle)
+        return (vel_x, vel_y)
