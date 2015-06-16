@@ -39,7 +39,7 @@ def save_state(statenum, game):
         game_info = str(len(game.players))
         game_info += " player, "
         game_info += "Earthlings, " if game.earth else "Aliens, "
-        game_info += "Level 1, "
+        game_info += "Level " + str(game.level) + ", "
         game_info += ["Normal", "Hard"][game.difficulty]
         pickler.dump(game_info)
         pickler.dump(game)
