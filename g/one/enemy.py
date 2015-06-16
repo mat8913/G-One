@@ -43,6 +43,8 @@ class Enemy(GameSprite):
         self.hcenter, self.vcenter = pos
         self.vel = vel
         self.health = health
+        if stage.difficulty == 1:
+            self.health *= 2
 
     def get_image(self):
         return Resources.ship_image
