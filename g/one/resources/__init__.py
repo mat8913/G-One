@@ -24,6 +24,7 @@ class Resources():
         pyglet.resource.path = ['@g.one.resources']
         pyglet.resource.reindex()
 
+        cls.space_image = cls.load_image("space.png")
         cls.ship_image = cls.load_image("ship.png")
         cls.earth_bullet_image = cls.load_image("earth_bullet.png")
         cls.alien_bullet_image = cls.load_image("alien_bullet.png")

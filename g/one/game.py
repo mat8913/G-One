@@ -74,6 +74,7 @@ class Game(pyglet.event.EventDispatcher):
         if self.paused:
             self.pause_menu.draw()
         else:
+            Resources.space_image.blit(0, 0)
             self.batch.draw()
             for healthbar in self.healthbars:
                 healthbar.draw()
