@@ -22,6 +22,7 @@ import pyglet
 from pyglet.window import key
 
 from g.one import savestate
+from g.one import highscores
 from g.one.menu_item import *
 from g.one.resources import Resources
 from g.one.background_music import BackgroundMusic
@@ -306,11 +307,10 @@ class HighscoresMenu(Menu):
 
     @earth.setter
     def earth(self, value):
-        from g.one.highscores import load_highscores
         self._earth = value
         self.title.text = "Highscores - " + (
           "Earthlings" if value else "Aliens")
-        score_list = load_highscores()[0 if value else 1]
+        score_list = highscores.load_highscores()[0 if value else 1]
         for row, data in zip_longest(self.scores, score_list):
             if data is None:
                 row[1].text = "..."
@@ -380,6 +380,10 @@ class OptionsMenu(Menu):
 class GameOverMenu(Menu):
     def __init__(self, window, score, difficulty, earth):
         Menu.__init__(self, window)
+        self.score = score
+        self.difficulty = difficulty
+        self.earth = earth
+        self.highscore = highscores.is_highscore(earth, score)
         self.title = pyglet.text.Label(
           'Game Over',
           font_name='Times New Roman',
@@ -416,35 +420,53 @@ class GameOverMenu(Menu):
           anchor_x='center', anchor_y='center',
           batch=self.batch
         )
-        self.enter_name_label = pyglet.text.Label(
-          'Please enter your name and press enter to continue:',
-          font_name='Times New Roman',
-          font_size=16,
-          x=427, y=200,
-          color=(255, 255, 255, 255),
-          anchor_x='center', anchor_y='center',
-          batch=self.batch
-        )
-        self.player_name_label = pyglet.text.Label(
-          '',
-          font_name='Times New Roman',
-          font_size=16,
-          x=427, y=170,
-          color=(255, 255, 255, 255),
-          anchor_x='center', anchor_y='center',
-          batch=self.batch
-        )
-        self.player_name = ""
+        if self.highscore:
+            self.enter_name_label = pyglet.text.Label(
+              'Please enter your name and press enter to continue:',
+              font_name='Times New Roman',
+              font_size=16,
+              x=427, y=200,
+              color=(255, 255, 255, 255),
+              anchor_x='center', anchor_y='center',
+              batch=self.batch
+            )
+            self.player_name_label = pyglet.text.Label(
+              '',
+              font_name='Times New Roman',
+              font_size=16,
+              x=427, y=170,
+              color=(255, 255, 255, 255),
+              anchor_x='center', anchor_y='center',
+              batch=self.batch
+            )
+            self.player_name = ""
+        else:
+            self.enter_name_label = pyglet.text.Label(
+              'You did not achieve a high score, press enter to continue.',
+              font_name='Times New Roman',
+              font_size=16,
+              x=427, y=200,
+              color=(255, 255, 255, 255),
+              anchor_x='center', anchor_y='center',
+              batch=self.batch
+            )
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.ENTER:
-            print(self.player_name)
+            if self.highscore:
+                highscores.add_highscore(self.earth, self.player_name,
+                                         self.difficulty, self.score)
+            self.window.change_stage(HighscoresMenu(self.window, self.earth))
 
     def on_text(self, text):
+        if not self.highscore:
+            return
         if text not in string.whitespace or text == ' ':
             self.player_name += text
 
     def on_text_motion(self, motion):
+        if not self.highscore:
+            return
         if motion == key.MOTION_BACKSPACE:
             self.player_name = self.player_name[:-1]
 
