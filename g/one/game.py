@@ -43,7 +43,6 @@ class Game(pyglet.event.EventDispatcher):
         self.batch = pyglet.graphics.Batch()
         self.enemies = []
         self.spawner = None
-        self.level = 0
         self.__target = -1
 
         self.players = []
@@ -53,6 +52,7 @@ class Game(pyglet.event.EventDispatcher):
         self.healthbars = []
         for i, e in enumerate(self.players):
             self.healthbars.append(Healthbar(e, 15 * i))
+
 
         self.status_label = pyglet.text.Label(
           '',
@@ -84,6 +84,16 @@ class Game(pyglet.event.EventDispatcher):
         )
         self.lives = 3
 
+        self.level_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=854, y=480,
+          color=(255, 255, 255, 255),
+          anchor_x='right', anchor_y='top'
+        )
+        self.level = 0
+
     def draw(self):
         if self.paused:
             self.pause_menu.draw()
@@ -95,7 +105,7 @@ class Game(pyglet.event.EventDispatcher):
             self.status_label.draw()
             self.score_label.draw()
             self.lives_label.draw()
-
+            self.level_label.draw()
 
     def update(self, dt):
         if self.paused:
@@ -209,6 +219,15 @@ class Game(pyglet.event.EventDispatcher):
         if value <= 0:
             self.game_over()
 
+    @property
+    def level(self):
+        return self._level
+
+    @level.setter
+    def level(self, value):
+        self._level = value
+        self.level_label.text = "Level: " + str(value)
+
     def get_target(self):
         self.__target = self.__target + 1
         if self.__target >= len(self.players):
@@ -224,6 +243,7 @@ class Game(pyglet.event.EventDispatcher):
         del state['score_label']
         del state['lives_label']
         del state['status_label']
+        del state['level_label']
         try:
             del state['_event_stack']
         except KeyError:
@@ -268,3 +288,13 @@ class Game(pyglet.event.EventDispatcher):
           anchor_x='center', anchor_y='top'
         )
         self.status = ""
+
+        self.level_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=854, y=480,
+          color=(255, 255, 255, 255),
+          anchor_x='right', anchor_y='top'
+        )
+        self.level = self._level
