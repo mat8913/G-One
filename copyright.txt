@@ -1,0 +1,68 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: G-One
+
+Files: *
+Copyright: 2015, Matthew Bekkema <mbekkema97@gmail.com>
+           2015, Kenneth Pahn <kennethpahn@irefur.biz>
+License: GPL-3+
+
+Files: g/one/resources/alien_bullet.png
+       g/one/resources/earth_bullet.png
+Copyright: 2013, Master484 <http://m484games.ucoz.com/>
+License: CC0
+
+Files: g/one/resources/alien_player.png
+Copyright: 2015, C-Toy <http://opengameart.org/content/126-2d-spaceships>
+License: CC-BY-SA-3.0
+
+Files: g/one/resources/earth_player.png
+Copyright: 2014, Xevin <http://opengameart.org/content/simple-spaceship>
+License: CC0
+
+Files: g/one/resources/explosion.wav
+Copyright: 2015, TinyWorlds <http://opengameart.org/content/explosion-0>
+License: CC0
+
+Files: g/one/resources/menu.wav
+Copyright: 2010, Brandon Morris <Brandonmorris12@gmail.com>
+License: CC-BY-3.0
+
+Files: g/one/resources/space.png
+Copyright: 2014, StumpyStrust <http://opengameart.org/content/space-skyboxes-0>
+License: CC0
+
+
+License: GPL-3+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>
+
+License: CC0
+ This work is licensed under a Creative Commons CC0 1.0 Universal
+ License.
+ .
+ The complete text of the Creative Commons CC0 1.0 Universal
+ License can be found at https://creativecommons.org/publicdomain/zero/1.0/.
+
+License: CC-BY-3.0
+ This work is licensed under a Creative Commons Attribution 3.0
+ Unported License.
+ .
+ The complete text of the Creative Commons Attribution 3.0 Unported
+ License can be found at https://creativecommons.org/licenses/by/3.0/.
+
+License: CC-BY-SA-3.0
+ This work is licensed under a Creative Commons Attribution-ShareAlike
+ 3.0 Unported License.
+ .
+ The complete text of the Creative Commons Attribution-ShareAlike 3.0
+ Unported License can be found at https://creativecommons.org/licenses/by-sa/3.0/.
