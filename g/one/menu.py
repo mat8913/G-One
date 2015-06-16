@@ -347,7 +347,8 @@ class OptionsMenu(Menu):
           OptionSelector(self, "Fullscreen:", ["Off", "On"], 150, 160),
           Slider(self, "Music:", 150, 130),
           Slider(self, "Sound effects:", 150, 100),
-          MenuItem(self, "Controls", 150, 70, center=False),
+          MenuAction(self, "Controls", self.controls_pressed, 150, 70,
+                     center=False),
           MenuAction(self, "Back", self.back_pressed, 100, 40)
         ]
         if Options.options['fullscreen']:
@@ -375,6 +376,76 @@ class OptionsMenu(Menu):
     def back_pressed(self):
         Options.save()
         self.window.change_stage(MainMenu(self.window))
+
+    def controls_pressed(self):
+        Options.save()
+        self.window.change_stage(ControlsMenu(self.window))
+
+
+class ControlsMenu(Menu):
+    def __init__(self, window):
+        Menu.__init__(self, window)
+        self.title = pyglet.text.Label(
+          'Controls',
+          font_name='Times New Roman',
+          font_size=25,
+          x=427, y=400,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.bg_text = [
+          pyglet.text.Label(
+            'Player 1',
+            font_name='Times New Roman',
+            font_size=16,
+            x=300, y=320,
+            color=(255, 255, 255, 255),
+            anchor_x='left', anchor_y='center',
+            batch=self.batch),
+          pyglet.text.Label(
+            'Player 2',
+            font_name='Times New Roman',
+            font_size=16,
+            x=600, y=320,
+            color=(255, 255, 255, 255),
+            anchor_x='left', anchor_y='center',
+            batch=self.batch)
+        ]
+        self.bg_text += [
+          pyglet.text.Label(
+            text,
+            font_name='Times New Roman',
+            font_size=16,
+            x=150, y=280 - 30*i,
+            color=(255, 255, 255, 255),
+            anchor_x='left', anchor_y='center',
+            batch=self.batch)
+          for i, text in enumerate(["Up:", "Right:", "Down:", "Left:",
+                                    "Shoot:"])
+        ]
+        self.items = [
+            HorizontalSelection([
+                KeySelector(self, Options.options['controls'][0][key],
+                            300, 280 - 30*i),
+                KeySelector(self, Options.options['controls'][1][key],
+                            600, 280 - 30*i)
+            ])
+            for i, key in enumerate([key.UP, key.RIGHT, key.DOWN, key.LEFT,
+                                     key.SPACE])
+        ]
+        self.items += [
+          MenuAction(self, "Back", self.back_pressed, 100, 40)
+        ]
+        self.selected = 0
+
+    def back_pressed(self):
+        for _key, hsel in zip([key.UP, key.RIGHT, key.DOWN, key.LEFT,
+                               key.SPACE], self.items[:-1]):
+            Options.options['controls'][0][_key] = hsel.options[0].selected_key
+            Options.options['controls'][1][_key] = hsel.options[1].selected_key
+        Options.save()
+        self.window.change_stage(OptionsMenu(self.window))
 
 
 class GameOverMenu(Menu):

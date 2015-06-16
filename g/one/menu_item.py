@@ -51,8 +51,8 @@ class MenuItem():
 
 
 class MenuAction(MenuItem):
-    def __init__(self, menu, text, action, x=0, y=0):
-        MenuItem.__init__(self, menu, text, x, y)
+    def __init__(self, menu, text, action, x=0, y=0, center=True):
+        MenuItem.__init__(self, menu, text, x, y, center)
         self.action = action
 
     def on_key_release(self, symbol, modifiers):
@@ -62,12 +62,13 @@ class MenuAction(MenuItem):
 
 class KeySelector(MenuItem):
     def __init__(self, menu, key, x=0, y=0):
-        MenuItem.__init__(self, menu, "", x, y)
+        MenuItem.__init__(self, menu, "", x, y, False)
         self.selected_key = key
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.ENTER:
             self.menu.window.push_handlers(on_key_release=self.select_key)
+            self.label.text = "[PRESS A KEY]"
 
     def select_key(self, symbol, modifiers):
         self.selected_key = symbol
@@ -81,7 +82,7 @@ class KeySelector(MenuItem):
     @selected_key.setter
     def selected_key(self, value):
         self._selected_key = value
-        self.label.text = key.symbol_string(value)
+        self.label.text = "[" + key.symbol_string(value) + "]"
 
 
 class OptionSelector(MenuItem):
