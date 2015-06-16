@@ -385,6 +385,7 @@ class OptionsMenu(Menu):
 class ControlsMenu(Menu):
     def __init__(self, window):
         Menu.__init__(self, window)
+        self.hselected = 0
         self.title = pyglet.text.Label(
           'Controls',
           font_name='Times New Roman',
@@ -430,7 +431,7 @@ class ControlsMenu(Menu):
                             300, 280 - 30*i),
                 KeySelector(self, Options.options['controls'][1][key],
                             600, 280 - 30*i)
-            ])
+            ], self)
             for i, key in enumerate([key.UP, key.RIGHT, key.DOWN, key.LEFT,
                                      key.SPACE])
         ]

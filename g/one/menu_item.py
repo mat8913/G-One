@@ -168,9 +168,11 @@ class Slider(MenuItem):
 
 
 class HorizontalSelection():
-    def __init__(self, options):
+    def __init__(self, options, menu=None):
         self.options = options
-        self._selected = 0
+        self.menu = menu
+        if menu is None:
+            self._selected = 0
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.LEFT:
@@ -185,10 +187,17 @@ class HorizontalSelection():
 
     @property
     def selected(self):
-        return self._selected
+        if self.menu is None:
+            return self._selected
+        else:
+            return self.menu.hselected
 
     @selected.setter
     def selected(self, value):
-        self.options[self._selected].set_selected(False)
-        self._selected = value
-        self.options[self._selected].set_selected(True)
+        prev = self._selected if self.menu is None else self.menu.hselected
+        self.options[prev].set_selected(False)
+        if self.menu is None:
+            self._selected = value
+        else:
+            self.menu.hselected = value
+        self.options[value].set_selected(True)
