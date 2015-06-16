@@ -77,6 +77,7 @@ class Level1Spawner(EnemySpawner):
         else:
             return []
 
+
 class Level2Spawner(EnemySpawner):
     def spawn(self, amount):
         if self.cooldown <= 0:

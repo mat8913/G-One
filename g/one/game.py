@@ -28,6 +28,7 @@ from g.one.spawner import *
 
 class Game(pyglet.event.EventDispatcher):
     spawners = [Level1Spawner, Level2Spawner]
+
     def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
         self.register_event_type('get_bullets')
