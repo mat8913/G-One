@@ -27,6 +27,7 @@ from g.one.spawner import Level1Spawner
 
 
 class Game(pyglet.event.EventDispatcher):
+    spawners = [Level1Spawner]
     def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
         self.register_event_type('get_bullets')
@@ -39,7 +40,8 @@ class Game(pyglet.event.EventDispatcher):
         self.pause_menu = None
         self.batch = pyglet.graphics.Batch()
         self.enemies = []
-        self.spawner = Level1Spawner(self)
+        self.spawner = None
+        self.level = 0
         self.__target = -1
 
         self.players = []
@@ -81,9 +83,27 @@ class Game(pyglet.event.EventDispatcher):
             self.score_label.draw()
             self.lives_label.draw()
 
-            spawn = self.spawner.spawn(len(self.enemies))
-            if spawn is not None:
-                self.enemies += spawn
+            if self.spawner is None and len(self.enemies) == 0:
+                self.level += 1
+                if self.level <= len(Game.spawners):
+                    self.spawner = Game.spawners[self.level-1](self)
+                else:
+                    self.game_over()
+                    return
+
+            if self.spawner is not None:
+                spawn = self.spawner.spawn(len(self.enemies))
+                if spawn is not None:
+                    self.enemies += spawn
+                else:
+                    self.spawner = None
+
+    def game_over(self):
+        from g.one.menu import GameOverMenu
+        self.window.change_stage(GameOverMenu(self.window,
+                                              self.score,
+                                              self.difficulty,
+                                              self.earth))
 
     def on_key_press(self, symbol, modifiers):
         if self.paused:
@@ -154,11 +174,7 @@ class Game(pyglet.event.EventDispatcher):
         self._lives = value
         self.lives_label.text = 'Lives: ' + str(value)
         if value <= 0:
-            from g.one.menu import GameOverMenu
-            self.window.change_stage(GameOverMenu(self.window,
-                                                  self.score,
-                                                  self.difficulty,
-                                                  self.earth))
+            self.game_over()
 
     def get_target(self):
         self.__target = self.__target + 1
