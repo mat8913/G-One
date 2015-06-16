@@ -59,6 +59,7 @@ class Player(GameSprite):
 
     def hit(self):
         self.health -= 1
+        self.stage.score -= 1
         if self.health <= 0:
             self.health = 100
             self.x = 0
