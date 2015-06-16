@@ -19,6 +19,7 @@ from pyglet.window import key
 
 from g.one import savestate
 from g.one.menu import Menu
+from g.one.menu import HighscoresMenu
 from g.one.menu_item import *
 
 
@@ -38,16 +39,20 @@ class PauseMenu(Menu):
         self.items = [
           MenuAction(self, "Resume", self.resume_pressed, 427, 160),
           MenuAction(self, "Save Game", self.save_game_pressed, 427, 130),
-          MenuItem(self, "Highscore List", 427, 100),
+          MenuAction(self, "Highscore List", self.highscore_list_pressed,
+                     427, 100),
           MenuAction(self, "Exit", self.exit_pressed, 427, 70),
         ]
         self.selected = 0
 
+    def resume_pressed(self):
+        self.game.change_pause(None)
+
     def save_game_pressed(self):
         self.game.change_pause(SaveGameMenu(self.game))
 
-    def resume_pressed(self):
-        self.game.change_pause(None)
+    def highscore_list_pressed(self):
+        self.game.change_pause(HighscoresPauseMenu(self.game))
 
     def exit_pressed(self):
         self.game.exit()
@@ -102,3 +107,12 @@ class SaveGameMenu(Menu):
                           statenum_text + info,
                           self.save_state_function(statenum),
                           427, y)
+
+
+class HighscoresPauseMenu(HighscoresMenu):
+    def __init__(self, game):
+        self.game = game
+        HighscoresMenu.__init__(self, None, game.earth)
+
+    def back_pressed(self):
+        self.game.change_pause(PauseMenu(self.game))
