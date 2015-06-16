@@ -54,6 +54,16 @@ class Game(pyglet.event.EventDispatcher):
         for i, e in enumerate(self.players):
             self.healthbars.append(Healthbar(e, 15 * i))
 
+        self.status_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=427, y=480,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='top'
+        )
+        self.status = ""
+
         self.score_label = pyglet.text.Label(
           '',
           font_name='Times New Roman',
@@ -82,6 +92,7 @@ class Game(pyglet.event.EventDispatcher):
             self.batch.draw()
             for healthbar in self.healthbars:
                 healthbar.draw()
+            self.status_label.draw()
             self.score_label.draw()
             self.lives_label.draw()
 
@@ -93,6 +104,7 @@ class Game(pyglet.event.EventDispatcher):
             self.level += 1
             if self.level <= len(Game.spawners):
                 self.spawner = Game.spawners[self.level-1](self)
+                self.status = "Start Level " + str(self.level)
             else:
                 self.game_over(True)
                 return
@@ -103,6 +115,10 @@ class Game(pyglet.event.EventDispatcher):
                 self.enemies += spawn
             else:
                 self.spawner = None
+        if self.status_countdown <= 0:
+            self.status_label.text = ""
+        else:
+            self.status_countdown -= dt
 
     def game_over(self, win=False):
         from g.one.menu import GameOverMenu
@@ -165,6 +181,15 @@ class Game(pyglet.event.EventDispatcher):
         return self.pause_menu is not None
 
     @property
+    def status(self):
+        return self.status_label.text
+
+    @status.setter
+    def status(self, value):
+        self.status_label.text = value
+        self.status_countdown = 3
+
+    @property
     def score(self):
         return self._score
 
@@ -198,6 +223,7 @@ class Game(pyglet.event.EventDispatcher):
         del state['pause_menu']
         del state['score_label']
         del state['lives_label']
+        del state['status_label']
         try:
             del state['_event_stack']
         except KeyError:
@@ -232,3 +258,13 @@ class Game(pyglet.event.EventDispatcher):
           anchor_x='left', anchor_y='top'
         )
         self.lives = self._lives
+
+        self.status_label = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=16,
+          x=427, y=480,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='top'
+        )
+        self.status = ""
