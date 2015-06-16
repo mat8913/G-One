@@ -89,7 +89,7 @@ class Game(pyglet.event.EventDispatcher):
                 if self.level <= len(Game.spawners):
                     self.spawner = Game.spawners[self.level-1](self)
                 else:
-                    self.game_over()
+                    self.game_over(True)
                     return
 
             if self.spawner is not None:
@@ -99,12 +99,13 @@ class Game(pyglet.event.EventDispatcher):
                 else:
                     self.spawner = None
 
-    def game_over(self):
+    def game_over(self, win=False):
         from g.one.menu import GameOverMenu
         self.window.change_stage(GameOverMenu(self.window,
                                               self.score,
                                               self.difficulty,
-                                              self.earth))
+                                              self.earth,
+                                              win))
 
     def on_key_press(self, symbol, modifiers):
         if self.paused:

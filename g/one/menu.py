@@ -450,14 +450,14 @@ class ControlsMenu(Menu):
 
 
 class GameOverMenu(Menu):
-    def __init__(self, window, score, difficulty, earth):
+    def __init__(self, window, score, difficulty, earth, win=False):
         Menu.__init__(self, window)
         self.score = score
         self.difficulty = difficulty
         self.earth = earth
         self.highscore = highscores.is_highscore(earth, score)
         self.title = pyglet.text.Label(
-          'Game Over',
+          'You win!' if win else 'Game Over',
           font_name='Times New Roman',
           font_size=25,
           x=427, y=400,
