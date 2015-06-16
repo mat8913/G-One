@@ -62,6 +62,7 @@ class Enemy(GameSprite):
         if collision is not None:
             self.hit()
             collision.hit()
+            collision.hit()
 
     def hit(self):
         """Called when the enemy is hit by a bullet or player.
