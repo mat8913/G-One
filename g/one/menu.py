@@ -16,6 +16,7 @@
 
 import string
 from sys import exit as quit
+from itertools import zip_longest
 
 import pyglet
 from pyglet.window import key
@@ -112,7 +113,8 @@ class MainMenu(Menu):
         self.items = [
           MenuAction(self, "New Game", self.new_game_pressed, 427, 160),
           MenuAction(self, "Load Game", self.load_game_pressed, 427, 130),
-          MenuItem(self, "Highscore List", 427, 100),
+          MenuAction(self, "Highscore List", self.highscore_list_pressed,
+                     427, 100),
           MenuAction(self, "Options", self.options_pressed, 427, 70),
           MenuAction(self, "Exit", quit, 427, 40)
         ]
@@ -124,6 +126,9 @@ class MainMenu(Menu):
 
     def load_game_pressed(self):
         self.window.change_stage(LoadGameMenu(self.window))
+
+    def highscore_list_pressed(self):
+        self.window.change_stage(HighscoresMenu(self.window))
 
     def options_pressed(self):
         self.window.change_stage(OptionsMenu(self.window))
@@ -201,6 +206,129 @@ class LoadGameMenu(Menu):
                               statenum_text + info,
                               self.load_state_function(statenum),
                               427, y)
+
+
+class HighscoresMenu(Menu):
+    def __init__(self, window, earth=True):
+        Menu.__init__(self, window)
+        self.title = pyglet.text.Label(
+          '',
+          font_name='Times New Roman',
+          font_size=25,
+          x=427, y=400,
+          color=(255, 255, 255, 255),
+          anchor_x='center', anchor_y='center',
+          batch=self.batch
+        )
+        self.items = [
+          HorizontalSelection([
+            MenuAction(self, "Back", self.back_pressed, 100, 40),
+            MenuAction(self, "Earthlings", self.earth_pressed, 600, 40),
+            MenuAction(self, "Aliens", self.aliens_pressed, 754, 40)
+          ])
+        ]
+        self.headings = [
+          pyglet.text.Label(
+            'Rank',
+            font_name='Times New Roman',
+            font_size=16,
+            x=100, y=350,
+            color=(255, 255, 255, 255),
+            anchor_x='left', anchor_y='center',
+            batch=self.batch),
+          pyglet.text.Label(
+            'Name',
+            font_name='Times New Roman',
+            font_size=16,
+            x=200, y=350,
+            color=(255, 255, 255, 255),
+            anchor_x='left', anchor_y='center',
+            batch=self.batch),
+          pyglet.text.Label(
+            'Difficulty',
+            font_name='Times New Roman',
+            font_size=16,
+            x=580, y=350,
+            color=(255, 255, 255, 255),
+            anchor_x='left', anchor_y='center',
+            batch=self.batch),
+          pyglet.text.Label(
+            'Score',
+            font_name='Times New Roman',
+            font_size=16,
+            x=700, y=350,
+            color=(255, 255, 255, 255),
+            anchor_x='left', anchor_y='center',
+            batch=self.batch),
+        ]
+
+        self.scores = [
+          [
+            pyglet.text.Label(
+              str(i+1) + '.',
+              font_name='Times New Roman',
+              font_size=16,
+              x=100, y=320 - 20*i,
+              color=(255, 255, 255, 255),
+              anchor_x='left', anchor_y='center',
+              batch=self.batch),
+            pyglet.text.Label(
+              '',
+              font_name='Times New Roman',
+              font_size=16,
+              x=200, y=320 - 20*i,
+              color=(255, 255, 255, 255),
+              anchor_x='left', anchor_y='center',
+              batch=self.batch),
+            pyglet.text.Label(
+              '',
+              font_name='Times New Roman',
+              font_size=16,
+              x=580, y=320 - 20*i,
+              color=(255, 255, 255, 255),
+              anchor_x='left', anchor_y='center',
+              batch=self.batch),
+            pyglet.text.Label(
+              '',
+              font_name='Times New Roman',
+              font_size=16,
+              x=700, y=320 - 20*i,
+              color=(255, 255, 255, 255),
+              anchor_x='left', anchor_y='center',
+              batch=self.batch),
+          ] for i in range(10)]
+        self.selected = 0
+        self.earth = earth
+
+    @property
+    def earth(self):
+        return self._earth
+
+    @earth.setter
+    def earth(self, value):
+        from g.one.highscores import load_highscores
+        self._earth = value
+        self.title.text = "Highscores - " + (
+          "Earthlings" if value else "Aliens")
+        score_list = load_highscores()[0 if value else 1]
+        for row, data in zip_longest(self.scores, score_list):
+            if data is None:
+                row[1].text = "..."
+                row[2].text = ""
+                row[3].text = ""
+            else:
+                row[1].text = data[0]
+                row[2].text = ["Normal", "Hard"][data[1]]
+                row[3].text = str(data[2])
+
+    def earth_pressed(self):
+        self.earth = True
+
+    def aliens_pressed(self):
+        self.earth = False
+
+    def back_pressed(self):
+        self.window.change_stage(MainMenu(self.window))
 
 
 class OptionsMenu(Menu):
