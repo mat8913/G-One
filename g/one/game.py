@@ -32,6 +32,7 @@ class Game(pyglet.event.EventDispatcher):
     def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
         self.register_event_type('get_bullets')
+        pyglet.clock.schedule_interval(self.update, 1/30)
 
         self.window = window
         self.earth = earth
@@ -84,20 +85,24 @@ class Game(pyglet.event.EventDispatcher):
             self.score_label.draw()
             self.lives_label.draw()
 
-            if self.spawner is None and len(self.enemies) == 0:
-                self.level += 1
-                if self.level <= len(Game.spawners):
-                    self.spawner = Game.spawners[self.level-1](self)
-                else:
-                    self.game_over(True)
-                    return
 
-            if self.spawner is not None:
-                spawn = self.spawner.spawn(len(self.enemies))
-                if spawn is not None:
-                    self.enemies += spawn
-                else:
-                    self.spawner = None
+    def update(self, dt):
+        if self.paused:
+            return
+        if self.spawner is None and len(self.enemies) == 0:
+            self.level += 1
+            if self.level <= len(Game.spawners):
+                self.spawner = Game.spawners[self.level-1](self)
+            else:
+                self.game_over(True)
+                return
+
+        if self.spawner is not None:
+            spawn = self.spawner.spawn(len(self.enemies))
+            if spawn is not None:
+                self.enemies += spawn
+            else:
+                self.spawner = None
 
     def game_over(self, win=False):
         from g.one.menu import GameOverMenu
@@ -140,6 +145,7 @@ class Game(pyglet.event.EventDispatcher):
     def delete(self):
         self.deleted = True
         self.window.remove_handlers(self)
+        pyglet.clock.unschedule(self.update)
         self.change_pause(None)
         for player in self.players:
             player.delete()
@@ -204,6 +210,7 @@ class Game(pyglet.event.EventDispatcher):
         self.__dict__.update(state)
         pyglet.event.EventDispatcher.__init__(self)
         self.register_event_type('get_bullets')
+        pyglet.clock.schedule_interval(self.update, 1/30)
         self.window.push_handlers(self)
         self.pause_menu = None
         self.score_label = pyglet.text.Label(
