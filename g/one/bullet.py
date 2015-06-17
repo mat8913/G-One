@@ -46,7 +46,8 @@ class Bullet(GameSprite):
             collision = self.collide_once(self.stage.players)
         if collision is not None:
             collision.hit()
-            self.delete()
+            if not self.stage.deleted:
+                self.delete()
             return
 
         if not self.onscreen():
