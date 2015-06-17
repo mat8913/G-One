@@ -117,6 +117,8 @@ class Game(pyglet.event.EventDispatcher):
             if self.level <= len(Game.spawners):
                 self.spawner = Game.spawners[self.level-1](self)
                 self.status = "Start Level " + str(self.level)
+                if self.level == 2:
+                    self.lives += 2
             else:
                 self.game_over(True)
                 return
