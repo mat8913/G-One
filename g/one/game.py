@@ -53,7 +53,13 @@ class Game(pyglet.event.EventDispatcher):
         for i, e in enumerate(self.players):
             self.healthbars.append(Healthbar(e, 15 * i))
 
+        self.initialise_text()
+        self.status = ""
+        self.score = 0
+        self.lives = 3
+        self.level = 0
 
+    def initialise_text(self):
         self.status_label = pyglet.text.Label(
           '',
           font_name='Times New Roman',
@@ -62,7 +68,6 @@ class Game(pyglet.event.EventDispatcher):
           color=(255, 255, 255, 255),
           anchor_x='center', anchor_y='top'
         )
-        self.status = ""
 
         self.score_label = pyglet.text.Label(
           '',
@@ -72,7 +77,6 @@ class Game(pyglet.event.EventDispatcher):
           color=(255, 255, 255, 255),
           anchor_x='left', anchor_y='top'
         )
-        self.score = 0
 
         self.lives_label = pyglet.text.Label(
           '',
@@ -82,7 +86,6 @@ class Game(pyglet.event.EventDispatcher):
           color=(255, 255, 255, 255),
           anchor_x='left', anchor_y='top'
         )
-        self.lives = 3
 
         self.level_label = pyglet.text.Label(
           '',
@@ -92,7 +95,6 @@ class Game(pyglet.event.EventDispatcher):
           color=(255, 255, 255, 255),
           anchor_x='right', anchor_y='top'
         )
-        self.level = 0
 
     def draw(self):
         if self.paused:
@@ -259,42 +261,7 @@ class Game(pyglet.event.EventDispatcher):
         pyglet.clock.schedule_interval(self.update, 1/30)
         self.window.push_handlers(self)
         self.pause_menu = None
-        self.score_label = pyglet.text.Label(
-          '',
-          font_name='Times New Roman',
-          font_size=16,
-          x=0, y=480,
-          color=(255, 255, 255, 255),
-          anchor_x='left', anchor_y='top'
-        )
+        self.initialise_text()
         self.score = self._score
-
-        self.lives_label = pyglet.text.Label(
-          '',
-          font_name='Times New Roman',
-          font_size=16,
-          x=0, y=460,
-          color=(255, 255, 255, 255),
-          anchor_x='left', anchor_y='top'
-        )
         self.lives = self._lives
-
-        self.status_label = pyglet.text.Label(
-          '',
-          font_name='Times New Roman',
-          font_size=16,
-          x=427, y=480,
-          color=(255, 255, 255, 255),
-          anchor_x='center', anchor_y='top'
-        )
-        self.status = ""
-
-        self.level_label = pyglet.text.Label(
-          '',
-          font_name='Times New Roman',
-          font_size=16,
-          x=854, y=480,
-          color=(255, 255, 255, 255),
-          anchor_x='right', anchor_y='top'
-        )
         self.level = self._level
