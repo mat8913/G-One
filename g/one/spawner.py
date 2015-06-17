@@ -93,11 +93,9 @@ class Level3Spawner(EnemySpawner):
                          BasicEnemy(*leftbouncing),
                          HorizontalTrackerEnemy(*tracking)
                        ]
-            if self.count < 30:
-                return [
-                         BasicEnemy(self.game, (450, 400), self.random_vel())
-                       ]
-            return None
+            return [
+                     BasicEnemy(self.game, (450, 400), self.random_vel())
+                   ]
         else:
             return []
 

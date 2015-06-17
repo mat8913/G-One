@@ -43,6 +43,7 @@ class Game(pyglet.event.EventDispatcher):
         self.enemies = []
         self.bullets = []
         self.spawner = None
+        self.win = False
         self.__target = -1
 
         self.players = []
@@ -120,8 +121,9 @@ class Game(pyglet.event.EventDispatcher):
                 if self.level == 2:
                     self.lives += 2
             else:
-                self.game_over(True)
-                return
+                self.win = True
+        if self.win:
+            self.game_over(True)
 
         if self.spawner is not None:
             spawn = self.spawner.spawn(len(self.enemies))
@@ -214,6 +216,8 @@ class Game(pyglet.event.EventDispatcher):
     def score(self, value):
         self._score = value
         self.score_label.text = 'Score: ' + str(value)
+        if value >= 500:
+            self.win = True
 
     @property
     def lives(self):
