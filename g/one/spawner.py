@@ -16,7 +16,7 @@
 
 import pyglet
 
-from g.one.enemy import BasicEnemy, HorizontalTrackerEnemy
+from g.one.enemy import *
 
 
 class EnemySpawner():
@@ -89,15 +89,10 @@ class Level3Spawner(EnemySpawner):
             tracking = [self.game, 400, -70]
             if self.count < 2:
                 return [
-                         BasicEnemy(*rightbouncing),
-                         BasicEnemy(*leftbouncing),
-                         HorizontalTrackerEnemy(*tracking)
+                         SplitterEnemy(*rightbouncing),
+                         SplitterEnemy(*leftbouncing),
                        ]
-            return [
-                     BasicEnemy(self.game, (450, 400), self.random_vel())
-                   ]
-        else:
-            return []
+        return []
 
     def random_vel(self):
         from random import randint

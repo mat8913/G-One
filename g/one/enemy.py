@@ -113,3 +113,31 @@ class HorizontalTrackerEnemy(Enemy):
     def update(self, dt):
         self.hcenter = self.player.hcenter
         Enemy.update(self, dt)
+
+class SplitterEnemy(Enemy):
+    def __init__(self, stage, pos=(0, 0), vel=(0, 0)):
+        Enemy.__init__(self, stage, pos, vel, 5)
+        self.cooldown = 0
+
+    def update(self, dt):
+        self.cooldown = self.cooldown - dt
+        if self.cooldown <= 0:
+            self.cooldown = 0.8
+            bullet_pos = (self.hcenter, self.vcenter)
+            Bullet(self.stage, self.earth, bullet_pos, (0, -500))
+        Enemy.update(self, dt)
+
+    def hit(self):
+        self.health -= 1
+        self.stage.score += 1
+        if self.health <= 0:
+            new_vel = (-self.vel[1], self.vel[0])
+            new_enemy = SplitterEnemy(self.stage, (self.x, self.y), new_vel)
+            self.stage.enemies.append(new_enemy)
+
+            new_vel = (self.vel[1], -self.vel[0])
+            new_enemy = SplitterEnemy(self.stage, (self.x, self.y), new_vel)
+            self.stage.enemies.append(new_enemy)
+
+            SoundEffect(Resources.explosion_sound)
+            self.delete()
