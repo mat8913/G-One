@@ -46,9 +46,6 @@ class Level1Spawner(EnemySpawner):
             self.count += 1
             rightmoving = [self.game, (0, 400), (100, 0)]
             leftmoving = [self.game, (854, 400), (-100, 0)]
-            rightbouncing = [self.game, (0, 400), (70, -70)]
-            leftbouncing = [self.game, (854, 400), (-70, -70)]
-            tracking = [self.game, 400, -70]
             if self.count < 10:
                 return [
                          BasicEnemy(*rightmoving)
@@ -58,16 +55,20 @@ class Level1Spawner(EnemySpawner):
                          BasicEnemy(*rightmoving),
                          BasicEnemy(*leftmoving)
                        ]
-            if self.count < 21:
-                if amount == 0:
-                    return [
-                           BasicEnemy(*rightbouncing),
-                           BasicEnemy(*leftbouncing)
-                           ]
-                else:
-                    self.count -= 1
-                    return []
-            if self.count < 30:
+            return None
+        else:
+            return []
+
+
+class Level2Spawner(EnemySpawner):
+    def spawn(self, amount):
+        if self.cooldown <= 0 and amount < 6:
+            self.cooldown = 1
+            self.count += 1
+            rightbouncing = [self.game, (0, 400), (70, -70)]
+            leftbouncing = [self.game, (854, 400), (-70, -70)]
+            tracking = [self.game, 400, -70]
+            if self.count < 10:
                 return [
                          BasicEnemy(*rightbouncing),
                          BasicEnemy(*leftbouncing),
@@ -78,7 +79,7 @@ class Level1Spawner(EnemySpawner):
             return []
 
 
-class Level2Spawner(EnemySpawner):
+class Level3Spawner(EnemySpawner):
     def spawn(self, amount):
         if self.cooldown <= 0:
             self.cooldown = 1

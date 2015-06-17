@@ -27,7 +27,7 @@ from g.one.spawner import *
 
 
 class Game(pyglet.event.EventDispatcher):
-    spawners = [Level1Spawner, Level2Spawner]
+    spawners = [Level1Spawner, Level2Spawner, Level3Spawner]
 
     def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
