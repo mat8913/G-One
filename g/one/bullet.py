@@ -73,10 +73,17 @@ class BouncyBullet(Bullet):
 
 
 class HomingBullet(Bullet):
+    def __init__(self, *args):
+        Bullet.__init__(self, *args)
+        self.bounces = 5
+
     def update(self, dt):
         if self.keep_onscreen():
             dx, dy = self.vel
             magnitude = math.sqrt(dx*dx + dy*dy)
             dx, dy = self.direction_to_sprite(self.stage.get_target())
             self.vel = tuple(x*magnitude for x in (dx, dy))
+            self.bounces -= 1
         Bullet.update(self, dt)
+        if self.bounces <= 0:
+            self.delete()
