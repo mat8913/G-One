@@ -23,10 +23,10 @@ from g.one.sprite import GameSprite
 class Bullet(GameSprite):
     def __init__(self, stage, earth, pos, vel):
         GameSprite.__init__(self, stage, earth)
+        stage.bullets.append(self)
         self.hcenter, self.vcenter = pos
         self.vel = vel
         self.belong_to_player = earth == stage.earth
-        stage.push_handlers(self.get_bullets)
 
     def get_image(self):
         if self.earth:
@@ -52,11 +52,8 @@ class Bullet(GameSprite):
         if not self.onscreen():
             self.delete()
 
-    def get_bullets(self, bullets):
-        bullets.append(self)
-
     def delete(self):
-        self.stage.remove_handlers(self.get_bullets)
+        self.stage.delete_bullet(self)
         GameSprite.delete(self)
 
     @property

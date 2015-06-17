@@ -31,7 +31,6 @@ class Game(pyglet.event.EventDispatcher):
 
     def __init__(self, window, earth, difficulty, players=1):
         window.push_handlers(self)
-        self.register_event_type('get_bullets')
         pyglet.clock.schedule_interval(self.update, 1/30)
 
         self.window = window
@@ -42,6 +41,7 @@ class Game(pyglet.event.EventDispatcher):
         self.pause_menu = None
         self.batch = pyglet.graphics.Batch()
         self.enemies = []
+        self.bullets = []
         self.spawner = None
         self.__target = -1
 
@@ -181,6 +181,9 @@ class Game(pyglet.event.EventDispatcher):
         while self.enemies:
             self.enemies[0].delete()
         del self.enemies
+        while self.bullets:
+            self.bullets[0].delete()
+        del self.bullets
         try:
             while True:
                 self.pop_handlers()
@@ -239,6 +242,9 @@ class Game(pyglet.event.EventDispatcher):
     def delete_enemy(self, enemy):
         self.enemies.remove(enemy)
 
+    def delete_bullet(self, bullet):
+        self.bullets.remove(bullet)
+
     def __getstate__(self):
         state = self.__dict__.copy()
         del state['pause_menu']
@@ -250,14 +256,11 @@ class Game(pyglet.event.EventDispatcher):
             del state['_event_stack']
         except KeyError:
             pass
-        state['bullets'] = []
-        self.dispatch_event('get_bullets', state['bullets'])
         return state
 
     def __setstate__(self, state):
         self.__dict__.update(state)
         pyglet.event.EventDispatcher.__init__(self)
-        self.register_event_type('get_bullets')
         pyglet.clock.schedule_interval(self.update, 1/30)
         self.window.push_handlers(self)
         self.pause_menu = None
