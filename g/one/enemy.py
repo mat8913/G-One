@@ -18,7 +18,7 @@ import math
 
 from g.one.resources import Resources
 from g.one.sprite import GameSprite
-from g.one.bullet import Bullet
+from g.one.bullet import *
 from g.one.sound_effect import SoundEffect
 
 
@@ -109,10 +109,16 @@ class HorizontalTrackerEnemy(Enemy):
         Enemy.__init__(self, stage, (player.hcenter, ypos), (0, yvel),
                        10)
         self.player = player
+        self.cooldown = 0
 
     def update(self, dt):
         self.hcenter = self.player.hcenter
         Enemy.update(self, dt)
+        self.cooldown -= dt
+        if self.cooldown <= 0 and self.stage.difficulty == 1:
+            self.cooldown = 0.8
+            bullet_pos = (self.hcenter, self.vcenter)
+            Bullet(self.stage, self.earth, bullet_pos, (0, -500))
 
 
 class SplitterEnemy(Enemy):
