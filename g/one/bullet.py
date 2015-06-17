@@ -67,8 +67,16 @@ class Bullet(GameSprite):
 
 
 class BouncyBullet(Bullet):
+    def __init__(self, *args):
+        Bullet.__init__(self, *args)
+        self.bounces = 5
+
     def update(self, dt):
-        self.bounce()
+        if self.bounce():
+            self.bounces -= 1
+        if self.bounces <= 0:
+            self.delete()
+            return
         Bullet.update(self, dt)
 
 
@@ -84,6 +92,7 @@ class HomingBullet(Bullet):
             dx, dy = self.direction_to_sprite(self.stage.get_target())
             self.vel = tuple(x*magnitude for x in (dx, dy))
             self.bounces -= 1
-        Bullet.update(self, dt)
         if self.bounces <= 0:
             self.delete()
+            return
+        Bullet.update(self, dt)

@@ -98,7 +98,14 @@ class BasicEnemy(Enemy):
         if self.cooldown <= 0:
             self.cooldown = 0.8
             bullet_pos = (self.hcenter, self.vcenter)
-            Bullet(self.stage, self.earth, bullet_pos, (0, -500))
+            if self.stage.difficulty == 1:
+                bullet_vel = tuple(
+                  500*x for x in
+                  self.direction_to_sprite(self.stage.get_target())
+                )
+                BouncyBullet(self.stage, self.earth, bullet_pos, bullet_vel)
+            else:
+                Bullet(self.stage, self.earth, bullet_pos, (0, -500))
         Enemy.update(self, dt)
 
 
