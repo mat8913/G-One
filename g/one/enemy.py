@@ -114,6 +114,7 @@ class HorizontalTrackerEnemy(Enemy):
         self.hcenter = self.player.hcenter
         Enemy.update(self, dt)
 
+
 class SplitterEnemy(Enemy):
     def __init__(self, stage, pos=(0, 0), vel=(0, 0)):
         Enemy.__init__(self, stage, pos, vel, 5)
