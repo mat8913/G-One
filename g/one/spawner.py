@@ -20,6 +20,9 @@ from g.one.enemy import *
 
 
 class EnemySpawner():
+    """Abstract enemy spawner class.  Subclass this and override the spawn
+    method to provide enemy spawners.
+    """
     def __init__(self, game):
         self.game = game
         self.cooldown = 0
@@ -31,6 +34,12 @@ class EnemySpawner():
             self.cooldown -= dt
 
     def spawn(self, amount):
+        """Override this to spawn enemies.  This method should return a list
+        of enemies which it creates to be added to the Game's list of enemies.
+        Return an empty list if there are no enemies to spawn at this current
+        time.  Return None if the spawner will not spawn any more enemies.
+        Amount will be set to the amount of enemies currently onscreen.
+        """
         pass
 
     def __setstate__(self, state):
@@ -38,6 +47,8 @@ class EnemySpawner():
         EnemySpawner.__init__(self, self.game)
         self.__dict__.update(state)
 
+# The code below follows the patterns described in the docstrings above and
+# should be self-explanatory.
 
 class Level1Spawner(EnemySpawner):
     def spawn(self, amount):
@@ -93,11 +104,3 @@ class Level3Spawner(EnemySpawner):
                          SplitterEnemy(*leftbouncing),
                        ]
         return []
-
-    def random_vel(self):
-        from random import randint
-        from math import sin, cos, radians
-        angle = radians(randint(0, 180))
-        vel_x = 90 * cos(angle)
-        vel_y = -90 * sin(angle)
-        return (vel_x, vel_y)
