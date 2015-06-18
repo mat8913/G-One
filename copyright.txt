@@ -31,6 +31,10 @@ Files: g/one/resources/space.png
 Copyright: 2014, StumpyStrust <http://opengameart.org/content/space-skyboxes-0>
 License: CC0
 
+Files: g/one/resources/game.wav
+Copyright: 2010, mrpoly <http://opengameart.org/content/space-music>
+License: CC0
+
 
 License: GPL-3+
  This program is free software; you can redistribute it and/or modify

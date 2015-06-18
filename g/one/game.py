@@ -23,6 +23,7 @@ from g.one.enemy import Enemy
 from g.one.resources import Resources
 from g.one.options import Options
 from g.one.healthbar import Healthbar
+from g.one.background_music import BackgroundMusic
 from g.one.spawner import *
 
 
@@ -41,6 +42,7 @@ class Game(pyglet.event.EventDispatcher):
         """
         window.push_handlers(self)
         pyglet.clock.schedule_interval(self.update, 1/30)
+        BackgroundMusic.play(Resources.game_music)
 
         self.window = window
         self.earth = earth
@@ -296,3 +298,4 @@ class Game(pyglet.event.EventDispatcher):
         self.score = self._score
         self.lives = self._lives
         self.level = self._level
+        BackgroundMusic.play(Resources.game_music)
