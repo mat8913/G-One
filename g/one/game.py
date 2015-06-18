@@ -241,7 +241,7 @@ class Game(pyglet.event.EventDispatcher):
     def score(self, value):
         self._score = value
         self.score_label.text = 'Score: ' + str(value)
-        if value >= 500 and self.level == 3:
+        if value >= 400 and self.level == 3:
             self.win = True
 
     @property
