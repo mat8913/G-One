@@ -23,6 +23,15 @@ from g.one.options import Options
 
 
 class GameWindow(pyglet.window.Window):
+    """The Window class for this application.
+
+    The drawing area is kept at a 16:9 aspect ratio at all times.
+
+    A stage based approach is used for handling the state.  Each menu, gameover
+    screen, etc. is a stage which takes full control of input and output.  Each
+    stage should provide a draw method which will be called when the window
+    display is to be updated.
+    """
     def __init__(self):
         pyglet.window.Window.__init__(self, width=854, height=480,
                                       caption="G - One", resizable=True)
@@ -35,19 +44,24 @@ class GameWindow(pyglet.window.Window):
         self.current_stage.draw()
 
     def on_key_press(self, symbol, modifiers):
+        # Remove the default event handler
         pass
 
     def on_key_release(self, symbol, modifiers):
+        # Remove the default event handler
         pass
 
     def on_options_changed(self):
+        """Event handler for when the options change"""
         self.set_fullscreen(Options.options['fullscreen'])
 
     def change_stage(self, newstage):
+        """Call this to change to a new stage"""
         self.current_stage.delete()
         self.current_stage = newstage
 
     def on_resize(self, width, height):
+        # Math to ensure a 16:9 aspect ratio
         adjwidth = (height * 16) // 9
         adjheight = (width * 9) // 16
         if adjwidth < width:
