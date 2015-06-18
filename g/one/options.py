@@ -22,6 +22,14 @@ from pyglet.window import key
 
 
 class Options():
+    """Provides loading and saving options to file.  Options.options will be a
+    dict of the current options.  If no options file is found on disk, the
+    default options will be loaded instead.
+
+    Add functions to Options.listeners to have them called when options change.
+
+    This is a static class.
+    """
     filename = get_settings_path("g-one") + "/options.p"
 
     default_controls = [
@@ -52,16 +60,23 @@ class Options():
 
     @staticmethod
     def load():
+        """Loads the options from file.  Loads default options if there is no
+        file.
+        """
         Options.options = Options.options_from_file(Options.filename)
         if Options.options is None:
             Options.options = Options.default_options
 
     @staticmethod
     def save():
+        """Saves the options to file"""
         Options.options_to_file(Options.filename)
 
     @staticmethod
     def options_from_file(filename):
+        """Load options from filename and return them.  None is returned on
+        error.
+        """
         try:
             with open(filename, 'rb') as f:
                 return pickle.load(f)
@@ -70,11 +85,13 @@ class Options():
 
     @staticmethod
     def options_to_file(filename):
+        """Save the current options to the specified filename"""
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, 'wb') as f:
             pickle.dump(Options.options, f)
 
     @staticmethod
     def changed():
+        """Call this when the options change"""
         for listener in Options.listeners:
             listener()
