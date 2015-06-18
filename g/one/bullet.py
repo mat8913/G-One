@@ -21,7 +21,21 @@ from g.one.sprite import GameSprite
 
 
 class Bullet(GameSprite):
+    """This is the basic bullet class.
+
+    It provides basic functionality of bullets such as movement according to
+    velocity.
+
+    Subclass this to provide different types of bullets
+    """
     def __init__(self, stage, earth, pos, vel):
+        """Keyword arguments:
+
+        stage -- the stage this bullet belongs to
+        earth -- True if this bullet is Earthling, otherwise False
+        pos   -- tuple of the bullet's initial position
+        vel   -- tuple of the bullet's initial velocity
+        """
         GameSprite.__init__(self, stage, earth)
         stage.bullets.append(self)
         self.hcenter, self.vcenter = pos
@@ -35,6 +49,12 @@ class Bullet(GameSprite):
             return Resources.alien_bullet_image
 
     def update(self, dt):
+        """Moves the bullet according to the current velocity and causes damage
+        upon collision with a sprite of the opposite Earthling status.
+
+        Override this method when subclassing but call it at the END of the
+        overriding method.
+        """
         if self.stage.deleted:
             self.delete()
             return
@@ -54,6 +74,11 @@ class Bullet(GameSprite):
             self.delete()
 
     def delete(self):
+        """Called when the bullet is to be deleted.
+
+        Informs the stage that the bullet is to be deleted from the bullet list
+        and then runs GameSprite's delete method.
+        """
         self.stage.delete_bullet(self)
         GameSprite.delete(self)
 
@@ -68,6 +93,7 @@ class Bullet(GameSprite):
 
 
 class BouncyBullet(Bullet):
+    """This bullet bounces when it touches the stage boundaries."""
     def __init__(self, *args):
         Bullet.__init__(self, *args)
         self.bounces = 5
@@ -76,12 +102,14 @@ class BouncyBullet(Bullet):
         if self.bounce():
             self.bounces -= 1
         if self.bounces <= 0:
+            # Delete the bullet once it has bounces 5 times.
             self.delete()
             return
         Bullet.update(self, dt)
 
 
 class HomingBullet(Bullet):
+    """This bullet bounces towards a player when it collides with walls."""
     def __init__(self, *args):
         Bullet.__init__(self, *args)
         self.bounces = 5
@@ -94,6 +122,7 @@ class HomingBullet(Bullet):
             self.vel = tuple(x*magnitude for x in (dx, dy))
             self.bounces -= 1
         if self.bounces <= 0:
+            # Delete the bullet once it has bounces 5 times.
             self.delete()
             return
         Bullet.update(self, dt)
