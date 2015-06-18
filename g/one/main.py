@@ -23,6 +23,7 @@ from g.one.background_music import BackgroundMusic
 
 
 def main():
+    """The entry point of this application"""
     pyglet.options['audio'] = tuple(x
                                     for x in pyglet.options['audio']
                                     if x != 'pulse')
