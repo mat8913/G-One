@@ -93,6 +93,12 @@ class BasicEnemy(Enemy):
         Enemy.__init__(self, stage, pos, vel, 5)
         self.cooldown = 0
 
+    def get_image(self):
+        if self.earth:
+            return Resources.earth_player_image
+        else:
+            return Resources.alien_player_image
+
     def update(self, dt):
         self.cooldown = self.cooldown - dt
         if self.cooldown <= 0:
