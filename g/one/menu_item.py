@@ -19,7 +19,17 @@ from pyglet.window import key
 
 
 class MenuItem():
+    """The abstract menu item class.  Displays text to a Menu and can be
+    selected.  Subclass this to provide more functionality.
+    """
     def __init__(self, menu, text, x=0, y=0, center=True):
+        """Keyword arguments:
+
+        menu   -- The Menu this belongs to
+        text   -- The text to be displayed
+        x, y   -- The coordinates to display this item
+        center -- Should the text be horizontally centered?
+        """
         self.menu = menu
         self.label = pyglet.text.Label(
           text,
@@ -33,9 +43,13 @@ class MenuItem():
             self.label.anchor_x = 'left'
 
     def on_key_release(self, symbol, modifiers):
+        """Override this to provide your own functionality.  Menus will call
+        this when they receive any key release event that they don't handle.
+        """
         pass
 
     def set_selected(self, selected):
+        """Menus will call this to inform the item it got (de)selected"""
         if selected:
             self.label.color = (255, 255, 0, 255)
         else:
@@ -51,7 +65,11 @@ class MenuItem():
 
 
 class MenuAction(MenuItem):
+    """This menu item will call a specified function when the enter key is
+    pressed on it.
+    """
     def __init__(self, menu, text, action, x=0, y=0, center=True):
+        """Set action to the function to be called when enter is pressed"""
         MenuItem.__init__(self, menu, text, x, y, center)
         self.action = action
 
@@ -61,7 +79,11 @@ class MenuAction(MenuItem):
 
 
 class KeySelector(MenuItem):
+    """This menu item will activate when enter is pressed on it.  Once
+    activated it will catch one key release event and store the keycode.
+    """
     def __init__(self, menu, key, x=0, y=0):
+        """Set key to the initial keycode this menu item should take"""
         MenuItem.__init__(self, menu, "", x, y, False)
         self.selected_key = key
 
@@ -73,7 +95,7 @@ class KeySelector(MenuItem):
     def select_key(self, symbol, modifiers):
         self.selected_key = symbol
         self.menu.window.remove_handlers(on_key_release=self.select_key)
-        return True
+        return True  # Prevent other event listeners from receiving this event
 
     @property
     def selected_key(self):
@@ -86,7 +108,11 @@ class KeySelector(MenuItem):
 
 
 class OptionSelector(MenuItem):
+    """Allows the user to scroll through a limited set of options using left
+    and right arrow keys.
+    """
     def __init__(self, menu, text, options, x, y):
+        """Set options to a list of string options to choose from"""
         MenuItem.__init__(self, menu, text, x, y, center=False)
         self.option_label = pyglet.text.Label(
           "<< >>",
@@ -116,6 +142,9 @@ class OptionSelector(MenuItem):
 
 
 class Slider(MenuItem):
+    """Provides a visual slider for the user to adjust quantities.  The
+    on_text_motion method must be called with text motion events.
+    """
     def __init__(self, menu, text, x, y):
         MenuItem.__init__(self, menu, text, x, y, center=False)
         self.width = 124
@@ -168,7 +197,12 @@ class Slider(MenuItem):
 
 
 class HorizontalSelection():
+    """Provides a way to have some menu items arranged horizontally"""
     def __init__(self, options, menu=None):
+        """Set options to a list of MenuItems.  Set menu to the containing Menu
+        IF multiple HorizontalSelections are to be in sync.  In that case,
+        menu.hselected will be used to store the current selection.
+        """
         self.options = options
         self.menu = menu
         if menu is None:
