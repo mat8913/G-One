@@ -20,6 +20,9 @@ from pyglet.graphics import Batch
 
 
 class GamePickler(pickle.Pickler):
+    """Pickler class for Game. Ensures no attempt is made to pickle the drawing
+    batch and window. Use GameUnpickler to unpickle.
+    """
     def persistent_id(self, obj):
         from g.one.game_window import GameWindow
         if isinstance(obj, Batch):
@@ -31,6 +34,9 @@ class GamePickler(pickle.Pickler):
 
 
 class GameUnpickler(pickle.Unpickler):
+    """Unpickler class for Game. Provide a window to be passed to unpickled
+    objects. The drawing batch will be created.
+    """
     def __init__(self, file, window):
         super().__init__(file)
         self.batch = Batch()
