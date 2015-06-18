@@ -140,6 +140,7 @@ class Game(pyglet.event.EventDispatcher):
                 self.win = True
         if self.win:
             self.game_over(True)
+            return
 
         if self.spawner is not None:
             spawn = self.spawner.spawn(len(self.enemies))
