@@ -18,12 +18,23 @@ from pyglet.resource import get_settings_path
 
 from g.one.game_pickler import GamePickler, GameUnpickler
 
+"""Savestates are created using GamePicklers.  Two parts are pickled in the
+following order:
+
+1. A string describing the savestate.  Provides info such as the difficultly
+   and level
+
+2. The Game itself
+"""
+
 
 def get_filename(statenum):
+    """Returns the absolute path and filename to a particular savestate"""
     return get_settings_path("g-one") + "/save_" + str(statenum) + ".p"
 
 
 def get_state_info(statenum):
+    """Returns the info portion of the savestate"""
     filename = get_filename(statenum)
     try:
         with open(filename, 'rb') as f:
