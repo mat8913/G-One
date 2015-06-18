@@ -20,6 +20,12 @@ from g.one.options import Options
 
 
 class SoundEffect(pyglet.media.Player):
+    """Works the same way as pyglet.media.Player, merely extends its
+    functionality:
+
+    * Deletes itself when the sound is complete
+    * Sets its own volume according the options
+    """
     def __init__(self, sound):
         pyglet.media.Player.__init__(self)
         self.volume = Options.options['sound effects'] / 100
