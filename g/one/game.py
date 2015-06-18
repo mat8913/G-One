@@ -27,9 +27,18 @@ from g.one.spawner import *
 
 
 class Game(pyglet.event.EventDispatcher):
+    """The game class is a stage that controls all of the game logic."""
+
     spawners = [Level1Spawner, Level2Spawner, Level3Spawner]
 
     def __init__(self, window, earth, difficulty, players=1):
+        """Keyword arguments:
+
+        window     -- The window this stage belongs to
+        earth      -- True if the player is Earthling, otherwise false
+        difficulty -- 0 for "Normal" difficulty, 1 for "Hard
+        players    -- The number of players. Currently, only 1 or 2 is accepted
+        """
         window.push_handlers(self)
         pyglet.clock.schedule_interval(self.update, 1/30)
 
@@ -61,6 +70,7 @@ class Game(pyglet.event.EventDispatcher):
         self.level = 0
 
     def initialise_text(self):
+        """Initialises the labels which will be displayed to screen"""
         self.status_label = pyglet.text.Label(
           '',
           font_name='Times New Roman',
@@ -98,6 +108,9 @@ class Game(pyglet.event.EventDispatcher):
         )
 
     def draw(self):
+        """Draws the sprites to the screen or draws the pause menu if the game
+        is paused.
+        """
         if self.paused:
             self.pause_menu.draw()
         else:
@@ -111,6 +124,7 @@ class Game(pyglet.event.EventDispatcher):
             self.level_label.draw()
 
     def update(self, dt):
+        """Called every (1/30) seconds for non-graphics logic"""
         if self.paused:
             return
         if self.spawner is None and len(self.enemies) == 0:
@@ -137,6 +151,7 @@ class Game(pyglet.event.EventDispatcher):
             self.status_countdown -= dt
 
     def game_over(self, win=False):
+        """Ends the game. Set win to True if the player has won."""
         from g.one.menu import GameOverMenu
         self.window.change_stage(GameOverMenu(self.window,
                                               self.score,
@@ -145,6 +160,7 @@ class Game(pyglet.event.EventDispatcher):
                                               win))
 
     def on_key_press(self, symbol, modifiers):
+        """Event handler for key press events"""
         if self.paused:
             return
         if symbol == key.ESCAPE:
@@ -157,6 +173,7 @@ class Game(pyglet.event.EventDispatcher):
                     return
 
     def on_key_release(self, symbol, modifiers):
+        """Event handler for key release events"""
         if self.paused:
             return self.pause_menu.on_key_release(symbol, modifiers)
         for i, player in enumerate(self.players):
@@ -166,15 +183,20 @@ class Game(pyglet.event.EventDispatcher):
                     return
 
     def change_pause(self, pause_menu):
+        """Changes the pause menu and deletes the old pause menu"""
         if self.pause_menu is not None:
             self.pause_menu.delete()
         self.pause_menu = pause_menu
 
     def exit(self):
+        """Exits to the main menu"""
         from g.one.menu import MainMenu
         self.window.change_stage(MainMenu(self.window))
 
     def delete(self):
+        """Called when the Game is to be deleted.
+
+        Clears sprite lists and unschedules the update method."""
         self.deleted = True
         self.window.remove_handlers(self)
         pyglet.clock.unschedule(self.update)
