@@ -96,8 +96,9 @@ class Menu():
         self.items[self._selected].set_selected(True)
 
 
-# The menus below follow the patterns described in the docstrings above and
-# should be self-explanatory.
+# The menus below mostly follow the patterns described in the docstrings above
+# and should be self-explanatory.  Some are special cases and will be
+# documented.
 
 class MainMenu(Menu):
     def __init__(self, window):
@@ -367,6 +368,8 @@ class OptionsMenu(Menu):
         Options.changed()
 
     def on_text_motion(self, motion):
+        # A text motion event handler is required so that holding down left or
+        # right will result in multiple movements.
         if isinstance(self.items[self.selected], Slider):
             self.items[self.selected].on_text_motion(motion)
         Options.options['music'] = self.items[1].value
@@ -451,6 +454,10 @@ class ControlsMenu(Menu):
 
 class GameOverMenu(Menu):
     def __init__(self, window, score, difficulty, earth, win=False):
+        """Mostly the same as the constructor for Menu.  The boolean, win, can
+        be provided which should be True if the game ended due to the player
+        winning as opposed to running out of lives.
+        """
         Menu.__init__(self, window)
         self.score = score
         self.difficulty = difficulty
@@ -531,12 +538,14 @@ class GameOverMenu(Menu):
             self.window.change_stage(HighscoresMenu(self.window, self.earth))
 
     def on_text(self, text):
+        # Required for name entry
         if not self.highscore:
             return
         if text not in string.whitespace or text == ' ':
             self.player_name += text
 
     def on_text_motion(self, motion):
+        # Only handles backspace
         if not self.highscore:
             return
         if motion == key.MOTION_BACKSPACE:
