@@ -35,6 +35,11 @@ Files: g/one/resources/game.wav
 Copyright: 2010, mrpoly <http://opengameart.org/content/space-music>
 License: CC0
 
+Files: g/one/resources/earth_tracker.png
+       g/one/resources/alien_tracker.png
+Copyright: 2014, Kenney <http://opengameart.org/content/space-shooter-redux>
+License: CC0
+
 
 License: GPL-3+
  This program is free software; you can redistribute it and/or modify

@@ -133,6 +133,12 @@ class HorizontalTrackerEnemy(Enemy):
             bullet_pos = (self.hcenter, self.vcenter)
             Bullet(self.stage, self.earth, bullet_pos, (0, -500))
 
+    def get_image(self):
+        if self.earth:
+            return Resources.earth_tracker_image
+        else:
+            return Resources.alien_tracker_image
+
 
 class SplitterEnemy(Enemy):
     def __init__(self, stage, pos=(0, 0), vel=(0, 0)):
