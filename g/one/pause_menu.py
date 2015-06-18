@@ -24,6 +24,9 @@ from g.one.menu_item import *
 
 
 class PauseMenu(Menu):
+    """PauseMenu follows the same patterns as Menu except no window is provided
+    as they are technically not "stages", they run alongside Game instead of
+    replacing it."""
     def __init__(self, game):
         Menu.__init__(self)
         self.game = game
