@@ -19,8 +19,10 @@ from pyglet.image.codecs.png import PNGImageDecoder
 
 
 class Resources():
+    """Loads resources.  This is a static class."""
     @classmethod
     def init(cls):
+        """Call this method once on application initialisation"""
         pyglet.resource.path = ['@g.one.resources']
         pyglet.resource.reindex()
 
@@ -41,10 +43,13 @@ class Resources():
 
     @staticmethod
     def load_image(filename):
+        """Loads an image from the specified filename"""
         with pyglet.resource.file(filename) as f:
+            # Other decoders cause the application to crash on Linux
             decoder = PNGImageDecoder()
             return pyglet.image.load(filename, file=f, decoder=decoder)
 
     @staticmethod
     def load_sound(filename):
+        """Loads an sound from the specified filename"""
         return pyglet.resource.media(filename, streaming=False)
