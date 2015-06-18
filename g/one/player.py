@@ -23,6 +23,9 @@ from g.one.bullet import Bullet
 
 
 class Player(GameSprite):
+    """Provides basic operations of a player such as movement according to
+    keystate.
+    """
     def __init__(self, stage, earth, player_number):
         GameSprite.__init__(self, stage, earth)
         self.keystate = [False] * 5
@@ -46,6 +49,14 @@ class Player(GameSprite):
             Bullet(self.stage, self.earth, bullet_pos, (0, 500))
 
     def on_key(self, direction, pressed):
+        """Call this when a key is pressed which corresponds to the player's
+        controls.
+
+        Keyword arguments:
+        direction -- UP, DOWN, LEFT, RIGHT or SPACE depending on which key was
+                     pressed relative to the player's controls
+        pressed   -- True if the key is pressed, False if it is released
+        """
         if direction == key.UP:
             self.keystate[0] = pressed
         elif direction == key.DOWN:
