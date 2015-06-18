@@ -20,8 +20,12 @@ from g.one.options import Options
 
 
 class BackgroundMusic():
+    """Player of background music.  Music is looped and correct volume is set
+    automatically.  This is a static class.
+    """
     @classmethod
     def init(cls):
+        """Call this once during initialisation"""
         cls.player = pyglet.media.Player()
         cls.player.push_handlers(cls.on_player_eos)
         cls.music = None
@@ -30,6 +34,8 @@ class BackgroundMusic():
 
     @classmethod
     def play(cls, music):
+        """Plays a music track.  Does nothing if the track is already
+        playing."""
         if cls.music == music:
             return
         cls.music = None
@@ -41,6 +47,8 @@ class BackgroundMusic():
 
     @classmethod
     def on_player_eos(cls):
+        """Event handler for when the player runs out of music"""
+        # Loop the current track if there is one
         if cls.music is None:
             return
         cls.player.queue(cls.music)
@@ -48,4 +56,5 @@ class BackgroundMusic():
 
     @classmethod
     def on_options_changed(cls):
+        """Event handler for when the options change"""
         cls.player.volume = Options.options['music'] / 100
