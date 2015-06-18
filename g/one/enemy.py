@@ -167,3 +167,9 @@ class SplitterEnemy(Enemy):
 
             SoundEffect(Resources.explosion_sound)
             self.delete()
+
+    def get_image(self):
+        if self.earth:
+            return Resources.earth_splitter_image
+        else:
+            return Resources.alien_splitter_image

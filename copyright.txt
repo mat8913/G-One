@@ -37,6 +37,8 @@ License: CC0
 
 Files: g/one/resources/earth_tracker.png
        g/one/resources/alien_tracker.png
+       g/one/resources/earth_splitter.png
+       g/one/resources/alien_splitter.png
 Copyright: 2014, Kenney <http://opengameart.org/content/space-shooter-redux>
 License: CC0
 

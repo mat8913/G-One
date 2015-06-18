@@ -32,6 +32,8 @@ class Resources():
         cls.alien_player_image = cls.load_image("alien_player.png")
         cls.earth_tracker_image = cls.load_image("earth_tracker.png")
         cls.alien_tracker_image = cls.load_image("alien_tracker.png")
+        cls.earth_splitter_image = cls.load_image("earth_splitter.png")
+        cls.alien_splitter_image = cls.load_image("alien_splitter.png")
 
         cls.menu_music = cls.load_sound("menu.wav")
         cls.game_music = cls.load_sound("game.wav")
